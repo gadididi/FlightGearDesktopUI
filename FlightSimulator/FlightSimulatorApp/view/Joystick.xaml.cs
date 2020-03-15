@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using FlightSimulatorApp.view;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,23 +11,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FlightSimulatorApp
+namespace FlightSimulatorApp.view
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Joystick.xaml
     /// </summary>
     /// 
-    public partial class MainWindow : Window
+    public partial class Joystick : UserControl
     {
-        public MainWindow()
+        public Joystick()
         {
             InitializeComponent();
-            joystick1 = new Joystick();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            System.Environment.Exit(1);
         }
     }
 }
