@@ -20,6 +20,7 @@ namespace FlightSimulatorApp.view
     public partial class Joystick : UserControl
     {
         private Point _positionInBlock;
+        Rect myRectangle;
         bool first_time = true;
 
         public Joystick()
@@ -34,8 +35,20 @@ namespace FlightSimulatorApp.view
             if (first_time) { 
                 _positionInBlock = Mouse.GetPosition(this);
                 first_time = false;
+
+
+                Point position = this.knobBoarder.PointToScreen(new Point(0d, 0d)),
+                controlPosition = this.PointToScreen(new Point(0d, 0d));
+
+                position.X -= controlPosition.X;
+                position.Y -= controlPosition.Y;
+
+
+                myRectangle = new Rect();
+                myRectangle.Location = new Point(position.X - 90, position.Y - 90);
+                myRectangle.Size = new Size(100, 100);
+
             }
-            
             // capture the mouse (so the mouse move events are still triggered (even when the mouse is not above the control)
             this.CaptureMouse();
         }
@@ -55,14 +68,10 @@ namespace FlightSimulatorApp.view
                 double YPos = mousePosition.Y - _positionInBlock.Y;
 
                 // move the usercontrol.
-                if (XPos > -1 && XPos < 1)
-                {
-                    if (YPos > -1 && YPos < 1)
-                    {
-                        Knob.RenderTransform = new TranslateTransform(XPos, YPos);
-                    }
+                if (myRectangle.Contains(new Point(XPos, YPos))) {
+                    Knob.RenderTransform = new TranslateTransform(XPos, YPos);
                 }
-
+                
             }
         }
 
