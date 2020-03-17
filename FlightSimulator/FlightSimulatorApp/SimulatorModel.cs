@@ -80,6 +80,7 @@ public class SimulatorModel : ISimulatorModel
         get { return roll_Degree; } 
         set
         {
+            roll_Degree = value;
             NotifyPropertyChanged("Roll_Degree");
         }
     }
@@ -102,6 +103,88 @@ public class SimulatorModel : ISimulatorModel
         }
     }
 
+    public void setAileron(double aileron)
+    {
+        double value_to_send;
+
+        if (aileron < 1)
+        {
+            if (aileron > 0)
+            {
+                value_to_send = aileron;
+            }
+            else
+            {
+                value_to_send = 0;
+            }
+        } 
+        else
+        {
+            value_to_send = 1;
+        }
+        //Here you send to the server "value_to_send"
+    }
+
+    public void setThrottle(double throttle)
+    {
+        double value_to_send;
+
+        if (throttle < 1)
+        {
+            if (throttle > 0)
+            {
+                value_to_send = throttle;
+            }
+            else
+            {
+                value_to_send = 0;
+            }
+        }
+        else
+        {
+            value_to_send = 1;
+        }
+        //Here you send to the server "value_to_send"
+    }
+
+    public void setDirection(double x_rudder, double y_elevator)
+    {
+        double value_to_send;
+
+        if (x_rudder < 1)
+        {
+            if (x_rudder > -1)
+            {
+                value_to_send = x_rudder;
+            }
+            else
+            {
+                value_to_send = -1;
+            }
+        }
+        else
+        {
+            value_to_send = 1;
+        }
+        //Here you send to the server "value_to_send"
+
+        if (y_elevator < 1)
+        {
+            if (y_elevator > -1)
+            {
+                value_to_send = y_elevator;
+            }
+            else
+            {
+                value_to_send = -1;
+            }
+        }
+        else
+        {
+            value_to_send = 1;
+        }
+        //Here you send to the server "value_to_send"
+    }
 
     public void Connect(string ip, int port)
     {
