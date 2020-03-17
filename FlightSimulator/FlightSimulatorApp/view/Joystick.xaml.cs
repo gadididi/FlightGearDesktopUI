@@ -55,14 +55,13 @@ namespace FlightSimulatorApp.view
                 double YPos = mousePosition.Y - _positionInBlock.Y;
 
                 // move the usercontrol.
-                if (XPos > -1)
+                if (XPos > -1 && XPos < 1)
                 {
-                    if (YPos < 1)
+                    if (YPos > -1 && YPos < 1)
                     {
-
+                        Knob.RenderTransform = new TranslateTransform(XPos, YPos);
                     }
                 }
-                Knob.RenderTransform = new TranslateTransform(XPos, YPos);
 
             }
         }
