@@ -8,7 +8,7 @@
         Title="MainWindow" Height="800" Width="1200" Background="White">
 
     <Grid>
-        <Controls:Joystick x:Name="joystick1" Margin="958,331,81,210" RenderTransformOrigin="0.5,0.5" >
+        <Controls:Joystick x:Name="joystick1" Margin="782,39,55,394" RenderTransformOrigin="0.5,0.5" Loaded="joystick1_Loaded" >
             <Controls:Joystick.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="0.5"/>

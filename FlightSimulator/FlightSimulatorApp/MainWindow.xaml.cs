@@ -32,5 +32,10 @@ namespace FlightSimulatorApp
         {
             System.Environment.Exit(1);
         }
+
+        private void joystick1_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
