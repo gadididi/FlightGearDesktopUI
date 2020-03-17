@@ -1,9 +1,7 @@
-﻿using System;
+﻿using FlightSimulatorApp.view;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using FlightSimulatorApp.view;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,22 +11,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Windows.Media.Animation;
 
 namespace FlightSimulatorApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RunGame.xaml
     /// </summary>
-    /// 
-    public partial class MainWindow : NavigationWindow
+    public partial class RunGame : Page
     {
         SimulatorFlightViewModel vm;
-        public MainWindow()
+        public RunGame()
         {
             InitializeComponent();
-            ShowsNavigationUI = false;
+            joystick1 = new Joystick();
+            exit_button = new Button();
+
+            DataContext = vm;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Environment.Exit(1);
         }
     }
-
 }

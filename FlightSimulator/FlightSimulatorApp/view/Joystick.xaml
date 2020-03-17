@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="351" Width="363">
+             mc:Ignorable="d" Height="351" Width="363" MouseDown="UserControl_MouseDown" MouseUp="UserControl_MouseUp" MouseMove="UserControl_MouseMove">
     <Grid Margin="0,0,316,89">
         <Canvas  x:Name="Base" Margin="0" Width="340" Height="340">
             <Ellipse HorizontalAlignment="Left" Height="340" VerticalAlignment="Top" Width="340">
@@ -14,7 +14,7 @@
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
-            <Ellipse HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="170" Canvas.Left="84" Canvas.Top="84">
+            <Ellipse x:Name="knobBoarder"  HorizontalAlignment="Left" Height="170" VerticalAlignment="Top" Width="170" Canvas.Left="84" Canvas.Top="84">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
                         <GradientStop Color="#FF0E0E0E" Offset="1" />
@@ -116,18 +116,18 @@
                 </Canvas.RenderTransform>
                 <Canvas.Resources>
                     <Storyboard x:Key="CenterKnob" Name="centerKnob">
-                        <DoubleAnimation Storyboard.TargetName="knobPosition"
+                        <DoubleAnimation x:Name="KnobAnimation" Storyboard.TargetName="knobPosition"
                              Storyboard.TargetProperty="X" To="0" Duration="0:0:0.2">
-                            <DoubleAnimation.EasingFunction>
-                                <BackEase EasingMode="EaseInOut" />
-                            </DoubleAnimation.EasingFunction>
-                        </DoubleAnimation>
-                        <DoubleAnimation Storyboard.TargetName="knobPosition" Storyboard.TargetProperty="Y" To="0" Duration="0:0:0.2">
-                            <DoubleAnimation.EasingFunction>
-                                <BackEase EasingMode="EaseInOut" />
-                            </DoubleAnimation.EasingFunction>
-                        </DoubleAnimation>
-                    </Storyboard>
+                                    <DoubleAnimation.EasingFunction>
+                                        <BackEase EasingMode="EaseInOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                                <DoubleAnimation Storyboard.TargetName="knobPosition" Storyboard.TargetProperty="Y" To="0" Duration="0:0:0.2">
+                                    <DoubleAnimation.EasingFunction>
+                                        <BackEase EasingMode="EaseInOut" />
+                                    </DoubleAnimation.EasingFunction>
+                                </DoubleAnimation>
+                            </Storyboard>
                 </Canvas.Resources>
             </Canvas>
         </Canvas>
