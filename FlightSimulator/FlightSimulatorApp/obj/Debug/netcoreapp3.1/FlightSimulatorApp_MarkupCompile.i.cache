@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\oril\source\repos\FlightSimulator\FlightSimulator\FlightSimulatorApp\App.xaml
-2390126604
+3506891045
 
-8-1649202472
+91277048902
 1921654412462
-MainWindow.xaml;view\Joystick.xaml;
+MainWindow.xaml;RunGame.xaml;view\Joystick.xaml;
 
 False
 
