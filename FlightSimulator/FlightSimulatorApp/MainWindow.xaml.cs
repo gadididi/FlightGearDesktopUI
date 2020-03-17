@@ -23,7 +23,6 @@ namespace FlightSimulatorApp
     /// 
     public partial class MainWindow : NavigationWindow
     {
-        SimulatorFlightViewModel vm;
         public MainWindow()
         {
             InitializeComponent();
