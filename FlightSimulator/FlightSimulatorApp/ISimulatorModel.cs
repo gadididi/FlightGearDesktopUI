@@ -9,15 +9,8 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	public void Disconnect();
 	public void Start();
 
-	//Will be set by the controller
-	public double Rudder { get; set; }
-	public double Elevator { get; set; }
-	public double Aileron { get; set; }
-	public double Throttle { get; set; }
 
-
-
-	//Will be viewed in the dashboard
+	//airplane properties
 	public double Heading_Degree { get; set; }
 	public double Vertical_Speed { get; set; }
 	public double Ground_Speed { get; set; }
