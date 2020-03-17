@@ -115,9 +115,7 @@
                     <TranslateTransform x:Name="knobPosition" />
                 </Canvas.RenderTransform>
                 <Canvas.Resources>
-
-                    <!--<Storyboard x:Key="CenterKnob" Name="centerKnob" Completed="centerKnob_Completed">
-
+                    <Storyboard x:Key="CenterKnob" Name="centerKnob">
                         <DoubleAnimation Storyboard.TargetName="knobPosition"
                              Storyboard.TargetProperty="X" To="0" Duration="0:0:0.2">
                             <DoubleAnimation.EasingFunction>
@@ -130,7 +128,6 @@
                             </DoubleAnimation.EasingFunction>
                         </DoubleAnimation>
                     </Storyboard>
-                    -->
                 </Canvas.Resources>
             </Canvas>
         </Canvas>
