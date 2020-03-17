@@ -187,7 +187,7 @@ public class SimulatorModel : ISimulatorModel
 
     public void Connect(string ip, int port)
     {
-        getter_client.Connect(ip, port);   
+        //getter_client.Connect(ip, port);   
         
     }
 
