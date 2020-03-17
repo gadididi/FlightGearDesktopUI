@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using FlightSimulatorApp.view;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,16 +14,13 @@ using System.Windows.Shapes;
 namespace FlightSimulatorApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RunGame.xaml
     /// </summary>
-    /// 
-    public partial class MainWindow : NavigationWindow
+    public partial class RunGame : Page
     {
-        public MainWindow()
+        public RunGame()
         {
             InitializeComponent();
-            ShowsNavigationUI = false;
         }
-
     }
 }

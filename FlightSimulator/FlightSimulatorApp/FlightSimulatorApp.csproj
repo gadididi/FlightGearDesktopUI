@@ -6,4 +6,18 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="background.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="background.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+
 </Project>
