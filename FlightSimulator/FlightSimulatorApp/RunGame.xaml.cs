@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Sockets;
 
 namespace FlightSimulatorApp
 {
@@ -25,7 +26,8 @@ namespace FlightSimulatorApp
             InitializeComponent();
             joystick1 = new Joystick();
             exit_button = new Button();
-
+            TcpClient tcpClient = new TcpClient();
+            this.vm = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
             DataContext = vm;
         }
 
@@ -33,5 +35,11 @@ namespace FlightSimulatorApp
         {
             System.Environment.Exit(1);
         }
+        public void Set_IP_Port(string ip, string port)
+        {
+            int Port = Int32.Parse(port);
+            this.vm.set_ip_and_port(ip, Port);
+        }
+
     }
 }

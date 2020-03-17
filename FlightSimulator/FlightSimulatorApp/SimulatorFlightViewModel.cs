@@ -9,7 +9,7 @@ namespace FlightSimulatorApp
 
     class SimulatorFlightViewModel : INotifyPropertyChanged 
     {
-
+        private ISimulatorModel model;
         public double VM_Heading_Degree
         {
             get { return model.Heading_Degree; }
@@ -65,7 +65,6 @@ namespace FlightSimulatorApp
             }
         }
 
-        private ISimulatorModel model;
         public SimulatorFlightViewModel(ISimulatorModel m)
         {
             this.model = m;
@@ -81,6 +80,10 @@ namespace FlightSimulatorApp
         {
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+        }
+        public void set_ip_and_port(string ip, int port)
+        {
+            this.model.Connect(ip, port);
         }
     }
 }

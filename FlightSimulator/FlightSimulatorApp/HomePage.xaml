@@ -17,8 +17,7 @@
         <TextBlock Text="Log In" FontSize="50" Margin="0,276,0,-26" HorizontalAlignment="Center" FontWeight="Heavy" Foreground="#FFDF0A0A"/>
         <TextBox x:Name="ip" Height="20" Width="100"  HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Margin="0,0,0,0"  Text="Enter IP" GotFocus="ip_GotFocus" LostFocus="ip_LostFocus"/>
         <TextBox x:Name="port" Height="20" Width="100" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Margin="0,60,0,0" Text="Enter port" GotFocus="port_GotFocus" LostFocus="port_LostFocus"/>
-        <Button x:Name="def" Content="Default Setup" HorizontalAlignment="Left" Height="25" Margin="466,453,0,0" VerticalAlignment="Top" Width="95" Click="def_Click"/>
-        <Button Content="Set IP and port" HorizontalAlignment="Left" Height="25" Margin="629,453,0,0" VerticalAlignment="Top" Width="95"/>
+        <Button x:Name="def" Content="Default Setup IP and port" HorizontalAlignment="Center" Height="25" Margin="0,457,0,0" VerticalAlignment="Top" Width="154" Click="def_Click"/>
         <Button Content="Let's Fly!" FontSize="40" HorizontalAlignment="Center" Margin="0,498,0,0" VerticalAlignment="Top" Width="184" Height="73" FontWeight="UltraBlack" Click="Button_Click_Fly"/>
         <Button x:Name="exit1" Content="EXIT" HorizontalAlignment="Center" Height="26" Margin="0,603,0,0" VerticalAlignment="Top" Width="154" FontSize="16" FontStretch="Normal" Click="Button_Click_Exit"/>
         <Grid.Background>
