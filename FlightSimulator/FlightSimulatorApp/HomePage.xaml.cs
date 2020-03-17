@@ -20,6 +20,7 @@ namespace FlightSimulatorApp
     /// </summary>
     public partial class HomePage : Page
     {
+        RunGame run;
         public HomePage()
         {
             InitializeComponent();
@@ -32,9 +33,12 @@ namespace FlightSimulatorApp
 
         private void Button_Click_Fly(object sender, RoutedEventArgs e)
         {
-            RunGame run = new RunGame();
-            this.NavigationService.Navigate(run);
-
+            if (Check_ip() && Check_port()) // !!!! OR IP AND PORT IS GOOD
+            {
+                this.run = new RunGame();
+                run.Set_IP_Port(ip.Text, port.Text);
+                this.NavigationService.Navigate(run);
+            }
         }
         private void ip_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -74,8 +78,50 @@ namespace FlightSimulatorApp
             string myPort = ConfigurationManager.AppSettings["port"];
             port.Text = myPort;
             ip.Text = myIP;
-
-            //add vm.set ip port!!!#####
+        }
+        private bool Check_ip()
+        {
+            string phrase = this.ip.Text;
+            string[] numbers = phrase.Split('.');
+            int i;
+            for(i=0; i < 4; i++)
+            {
+                try
+                {
+                    if(Int32.Parse(numbers[i]) <0 || Int32.Parse(numbers[i])>255)
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    // show not valid port on the screen
+                    return false;
+                }
+            }
+            if (numbers.Length > 4)
+            {
+                return false;
+            }
+            return true;
+        }
+        private bool Check_port()
+        {
+            int m;
+            try
+            {
+                m = Int32.Parse(port.Text);
+            }
+            catch (FormatException e)
+            {
+                // show not valid port on the screen
+                return false;
+            }
+            if (m < 0 || (m >= 0 && m <= 1023) || m > 65535)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

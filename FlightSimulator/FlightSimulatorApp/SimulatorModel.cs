@@ -10,13 +10,12 @@ public class SimulatorModel : ISimulatorModel
 {
     volatile Boolean stop;
     private TcpClient getter_client;
-    //private TcpClient setter_client;
+    
 
     public SimulatorModel(TcpClient T)
     {
         this.stop = false;
         this.getter_client = T;
-        //this.setter_client = new TcpClient();
     }
 
     // event
@@ -188,15 +187,14 @@ public class SimulatorModel : ISimulatorModel
 
     public void Connect(string ip, int port)
     {
-        getter_client.Connect(ip, port);
-        //setter_client.Connect(ip, port);
+        getter_client.Connect(ip, port);   
+        
     }
 
     public void Disconnect()
     {
         getter_client.Close();
         this.stop = true;
-        //setter_client.Close();
     }
 
     public void Start()
