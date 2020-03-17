@@ -38,6 +38,9 @@ namespace FlightSimulatorApp
                 this.run = new RunGame();
                 run.Set_IP_Port(ip.Text, port.Text);
                 this.NavigationService.Navigate(run);
+            } else
+            {
+                mistake.Text = "  wrong IP or port";
             }
         }
         private void ip_GotFocus(object sender, RoutedEventArgs e)
