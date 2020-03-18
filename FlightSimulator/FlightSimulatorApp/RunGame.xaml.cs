@@ -31,6 +31,7 @@ namespace FlightSimulatorApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+
             System.Environment.Exit(1);
         }
     }
