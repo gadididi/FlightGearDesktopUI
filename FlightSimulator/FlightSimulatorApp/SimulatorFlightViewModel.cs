@@ -9,7 +9,10 @@ namespace FlightSimulatorApp
 
     class SimulatorFlightViewModel : INotifyPropertyChanged 
     {
+
+
         private ISimulatorModel model;
+
         public double VM_Heading_Degree
         {
             get { return model.Heading_Degree; }
@@ -41,6 +44,16 @@ namespace FlightSimulatorApp
         public double VM_Altimeter_FT
         {
             get { return model.Altimeter_FT; }
+        }
+
+        public double VM_Longitude_deg
+        {
+            get { return model.Longitude_deg; }
+        }
+
+        public double VM_Latitude_deg
+        {
+            get { return model.Latitude_deg; }
         }
 
         private double throttle;

@@ -42,7 +42,7 @@
             <Label Content="Altimeter Altitude" Height="44" Width="166"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Left" Height="352" Margin="804,-2,0,0" VerticalAlignment="Top" Width="186">
+        <StackPanel HorizontalAlignment="Left" Height="352" Margin="847,-2,0,0" VerticalAlignment="Top" Width="143">
             <Label Content="{Binding VM_Heading_Degree}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Vertical_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Ground_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
