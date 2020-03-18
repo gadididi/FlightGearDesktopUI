@@ -20,7 +20,11 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	public double Pitch_Degree { get; set; }
 	public double Altimeter_FT { get; set; }
 
-	public void setAileron(double aileron);
+	public double Latitude_deg { get; set; }
+
+	public double Longitude_deg { get; set; }
+
+    public void setAileron(double aileron);
 
 	public void setThrottle(double throttle);
 
