@@ -96,7 +96,9 @@ namespace FlightSimulatorApp
                         return false;
                     }
                 }
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
                 catch (Exception e)
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
                 {
                     // show not valid port on the screen
                     return false;
@@ -115,7 +117,9 @@ namespace FlightSimulatorApp
             {
                 m = Int32.Parse(port.Text);
             }
+#pragma warning disable CS0168 // The variable 'e' is declared but never used
             catch (FormatException e)
+#pragma warning restore CS0168 // The variable 'e' is declared but never used
             {
                 // show not valid port on the screen
                 return false;
