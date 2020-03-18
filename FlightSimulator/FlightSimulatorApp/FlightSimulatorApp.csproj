@@ -11,6 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.Maps.MapControl.WPF">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="background.jpg" />
   </ItemGroup>
 
