@@ -168,6 +168,11 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
+        NetworkStream stream = getter_client.GetStream();
+        string msg = "set/controls/engines/current-engine/throttle " + throttle.ToString() + "\n";
+        Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
+        bytes = new byte[getter_client.ReceiveBufferSize];
+        stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
     }
 
@@ -212,8 +217,8 @@ public class SimulatorModel : ISimulatorModel
 
     public void Connect(string ip, int port)
     {
-        //getter_client.Connect(ip, port);   
-        
+        getter_client.Connect(ip, port);
+        this.Start();
     }
 
     public void Disconnect()
@@ -224,51 +229,74 @@ public class SimulatorModel : ISimulatorModel
 
     public void Start()
     {
-        List<string> list_get_data = new List<string>();
-
-        //****WITH OR WITHOUT SPACE AFTER THE WORD GET******//
-        list_get_data.Add("get /instrumentation/heading-indicator/indicated-heading-deg");
-        list_get_data.Add("get /instrumentation/gps/indicated-vertical-speed");
-        list_get_data.Add("get /instrumentation/gps/indicated-ground-speed-kt");
-        list_get_data.Add("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-        list_get_data.Add("get /instrumentation/gps/indicated-altitude-ft");
-        list_get_data.Add("get /instrumentation/attitude-indicator/internal-roll-deg");
-        list_get_data.Add("get /instrumentation/attitude-indicator/internal-pitch-deg");
-        list_get_data.Add("get /instrumentation/altimeter/indicated-altitude-ft");
-        list_get_data.Add("get /position/latitude-deg");
-        list_get_data.Add("get /position/longitude-deg");
-        StreamWriter writer = new StreamWriter(this.getter_client.GetStream(),
-                                               Encoding.ASCII);
-        StreamReader reader = new StreamReader(this.getter_client.GetStream(),
-                                               Encoding.ASCII);
-        new Thread(delegate ()
+        Thread T  = new Thread(delegate ()
         {
+
+            NetworkStream stream = getter_client.GetStream();
+            List<Byte[]> list_data = new List<Byte[]>();
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/heading-indicator/indicated-heading-deg"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/gps/indicated-vertical-speed"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/gps/indicated-ground-speed-kt"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/airspeed-indicator/indicated-speed-kt"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/gps/indicated-altitude-ft"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/attitude-indicator/internal-roll-deg"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/attitude-indicator/internal-pitch-deg"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/altimeter/indicated-altitude-ft"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/position/latitude-deg"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/position/longitude-deg"));
+            Byte[] bytes;
+            bytes = new byte[getter_client.ReceiveBufferSize];
             while (!this.stop)
             {
+
                 int i = 0;
-                writer.Write(list_get_data[i++]);
-                Heading_Degree = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Vertical_Speed = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Ground_Speed = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Air_Speed = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Altitude_FT = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Roll_Degree = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Pitch_Degree = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Altimeter_FT = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i++]);
-                Latitude_deg = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i]);
-                Longitude_deg = Double.Parse(reader.ReadToEnd());
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                Heading_Degree = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                Vertical_Speed = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                Ground_Speed = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Air_Speed = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Altitude_FT = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Roll_Degree = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Pitch_Degree = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Altimeter_FT = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Latitude_deg = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i].Length);
+                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+
+                Longitude_deg = Double.Parse(Encoding.UTF8.GetString(bytes));
+                i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
             }
         });
+        T.Start();
+
+    }
+    public void run()
+    {
+
     }
 
     //#### NEED TO FILL IN !! ####
