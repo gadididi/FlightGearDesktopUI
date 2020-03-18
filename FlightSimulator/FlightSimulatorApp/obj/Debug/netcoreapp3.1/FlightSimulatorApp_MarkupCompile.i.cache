@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\גדי\Source\Repos\FlightGearDesktopUI\FlightSimulator\FlightSimulatorApp\obj\Debug\netcoreapp3.1\
+C:\Users\oril\source\repos\FlightSimulator\FlightSimulator\FlightSimulatorApp\obj\Debug\netcoreapp3.1\
 FlightSimulatorApp
 none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
-C:\Users\גדי\Source\Repos\FlightGearDesktopUI\FlightSimulator\FlightSimulatorApp\App.xaml
+C:\Users\oril\source\repos\FlightSimulator\FlightSimulator\FlightSimulatorApp\App.xaml
 4-187144538
 
-10-1379082859
-1921654412462
+10-1862134215
+193-28260723
 HomePage.xaml;MainWindow.xaml;RunGame.xaml;view\Joystick.xaml;
 
-False
+True
 

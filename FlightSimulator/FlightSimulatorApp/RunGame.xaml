@@ -4,12 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:FlightSimulatorApp.view"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" 
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" Background="White">
 
     <Grid>
 
-        <Controls:Joystick x:Name="joystick1" Margin="645,373,-8,-140" RenderTransformOrigin="0.0,0.0" >
+        <Grid>
+            <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="37.806029,-122.407007" ZoomLevel="16"/>
+        </Grid>
+
+        <Controls:Joystick x:Name="joystick1" Margin="660,355,-24,-106" RenderTransformOrigin="0.0,0.0" >
             <Controls:Joystick.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="0.5" ScaleX="0.5"/>
@@ -42,7 +47,7 @@
             <Label Content="Altimeter Altitude" Height="44" Width="166"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Left" Height="352" Margin="847,-2,0,0" VerticalAlignment="Top" Width="143">
+        <StackPanel HorizontalAlignment="Left" Height="352" Margin="847,-2,0,0" VerticalAlignment="Top" Width="186">
             <Label Content="{Binding VM_Heading_Degree}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Vertical_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Ground_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
@@ -53,11 +58,11 @@
             <Label Content="{Binding VM_Altimeter_FT}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Left" Height="161" Margin="826,373,0,0" VerticalAlignment="Top" Width="160" RenderTransformOrigin="0.453,0.27">
-            <Label Content="Throttle" Height="44" Width="72"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Slider Value="{Binding VM_Throttle}" Width="192" Height="48"/>
+        <StackPanel HorizontalAlignment="Left" Height="161" Margin="842,355,0,0" VerticalAlignment="Top" Width="160" RenderTransformOrigin="0.453,0.27">
+            <Label Content="Throttle" Height="44" Width="72"  Foreground="White" FontSize="18" FontFamily="Arial" RenderTransformOrigin="0.556,0.114"/>
+            <Slider Minimum="0" Maximum="1"  Value="{Binding VM_Throttle}" Width="132" Height="22"/>
             <Label Content="Aileron" Height="44" Width="65"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Slider Value="{Binding VM_Aileron}" Width="192" Height="48"/>
+            <Slider Minimum="0" Maximum="1" Value="{Binding VM_Aileron}" Width="131" Height="20"/>
         </StackPanel>
 
         <Grid.Background>
