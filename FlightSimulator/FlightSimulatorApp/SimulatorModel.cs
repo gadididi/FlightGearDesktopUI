@@ -29,6 +29,31 @@ public class SimulatorModel : ISimulatorModel
     private double roll_Degree;
     private double pitch_Degree;
     private double altimeter_FT;
+    
+    //for the map
+    private double longitude_deg;
+    private double latitude_deg;
+
+    public double Longitude_deg
+    {
+        get { return longitude_deg; }
+        set
+        {
+            longitude_deg = value;
+            NotifyPropertyChanged("Longitude_deg");
+        }
+    }
+
+    public double Latitude_deg
+    {
+        get { return latitude_deg; }
+        set
+        {
+            latitude_deg = value;
+            NotifyPropertyChanged("Latitude_deg");
+        }
+    }
+
     public double Heading_Degree
     {
         get { return heading_Degree; }
@@ -210,6 +235,8 @@ public class SimulatorModel : ISimulatorModel
         list_get_data.Add("get /instrumentation/attitude-indicator/internal-roll-deg");
         list_get_data.Add("get /instrumentation/attitude-indicator/internal-pitch-deg");
         list_get_data.Add("get /instrumentation/altimeter/indicated-altitude-ft");
+        list_get_data.Add("get /position/latitude-deg");
+        list_get_data.Add("get /position/longitude-deg");
         StreamWriter writer = new StreamWriter(this.getter_client.GetStream(),
                                                Encoding.ASCII);
         StreamReader reader = new StreamReader(this.getter_client.GetStream(),
@@ -233,8 +260,12 @@ public class SimulatorModel : ISimulatorModel
                 Roll_Degree = Double.Parse(reader.ReadToEnd());
                 writer.Write(list_get_data[i++]);
                 Pitch_Degree = Double.Parse(reader.ReadToEnd());
-                writer.Write(list_get_data[i]);
+                writer.Write(list_get_data[i++]);
                 Altimeter_FT = Double.Parse(reader.ReadToEnd());
+                writer.Write(list_get_data[i++]);
+                Latitude_deg = Double.Parse(reader.ReadToEnd());
+                writer.Write(list_get_data[i]);
+                Longitude_deg = Double.Parse(reader.ReadToEnd());
                 Thread.Sleep(250); // read the data in 4Hz
             }
         });
