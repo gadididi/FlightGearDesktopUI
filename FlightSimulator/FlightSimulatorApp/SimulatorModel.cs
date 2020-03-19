@@ -146,6 +146,11 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
+        NetworkStream stream = getter_client.GetStream();
+        string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\r\n";
+        Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
+        bytes = new byte[getter_client.ReceiveBufferSize];
+        stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
     }
 
@@ -169,9 +174,8 @@ public class SimulatorModel : ISimulatorModel
             value_to_send = 1;
         }
         NetworkStream stream = getter_client.GetStream();
-        string msg = "set/controls/engines/current-engine/throttle " + throttle.ToString() + "\n";
+        string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\r\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
-        bytes = new byte[getter_client.ReceiveBufferSize];
         stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
     }
@@ -179,6 +183,7 @@ public class SimulatorModel : ISimulatorModel
     public void setDirection(double x_rudder, double y_elevator)
     {
         double value_to_send;
+        NetworkStream stream = getter_client.GetStream();
 
         if (x_rudder < 1)
         {
@@ -195,6 +200,9 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
+        string msg = "set /controls/flight/rudder " + value_to_send.ToString() + "\r\n";
+        Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
+        stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
 
         if (y_elevator < 1)
@@ -212,6 +220,9 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
+         msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\r\n";
+         bytes = System.Text.Encoding.ASCII.GetBytes(msg);
+         stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
     }
 
@@ -234,59 +245,112 @@ public class SimulatorModel : ISimulatorModel
 
             NetworkStream stream = getter_client.GetStream();
             List<Byte[]> list_data = new List<Byte[]>();
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/heading-indicator/indicated-heading-deg"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/gps/indicated-vertical-speed"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/gps/indicated-ground-speed-kt"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/airspeed-indicator/indicated-speed-kt"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/gps/indicated-altitude-ft"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/attitude-indicator/internal-roll-deg"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/attitude-indicator/internal-pitch-deg"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/instrumentation/altimeter/indicated-altitude-ft"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/position/latitude-deg"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get/position/longitude-deg"));
-            Byte[] bytes;
-            bytes = new byte[getter_client.ReceiveBufferSize];
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/heading-indicator/indicated-heading-deg\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-vertical-speed\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-ground-speed-kt\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/airspeed-indicator/indicated-speed-kt\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-altitude-ft\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/attitude-indicator/internal-roll-deg\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/attitude-indicator/internal-pitch-deg\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/altimeter/indicated-altitude-ft\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /position/latitude-deg\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /position/longitude-deg\r\n"));
+            Byte[] messageReceived = new byte[256];
+            // String to store the response ASCII representation.
+            String responseData = String.Empty;
             while (!this.stop)
             {
 
                 int i = 0;
                 stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
-                Heading_Degree = Double.Parse(Encoding.UTF8.GetString(bytes));
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
-                Vertical_Speed = Double.Parse(Encoding.UTF8.GetString(bytes));
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
-                Ground_Speed = Double.Parse(Encoding.UTF8.GetString(bytes));
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                Int32 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                string[] words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Heading_Degree = Double.Parse(words[2]);
+                responseData = String.Empty;
 
-                Air_Speed = Double.Parse(Encoding.UTF8.GetString(bytes));
                 stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Vertical_Speed = Double.Parse(words[2]);
+                responseData = String.Empty;
 
-                Altitude_FT = Double.Parse(Encoding.UTF8.GetString(bytes));
                 stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Ground_Speed = Double.Parse(words[2]);
+                responseData = String.Empty;
 
-                Roll_Degree = Double.Parse(Encoding.UTF8.GetString(bytes));
                 stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Air_Speed = Double.Parse(words[2]);
+                responseData = String.Empty;
 
-                Pitch_Degree = Double.Parse(Encoding.UTF8.GetString(bytes));
                 stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Altitude_FT = Double.Parse(words[2]);
+                responseData = String.Empty;
 
-                Altimeter_FT = Double.Parse(Encoding.UTF8.GetString(bytes));
                 stream.Write(list_data[i], 0, list_data[i++].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Roll_Degree = Double.Parse(words[2]);
+                responseData = String.Empty;
 
-                Latitude_deg = Double.Parse(Encoding.UTF8.GetString(bytes));
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Pitch_Degree = Double.Parse(words[2]);
+                responseData = String.Empty;
+
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Altimeter_FT = Double.Parse(words[2]);
+                responseData = String.Empty;
+
+                stream.Write(list_data[i], 0, list_data[i++].Length);
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Latitude_deg = Double.Parse(words[2]);
+                responseData = String.Empty;
+
                 stream.Write(list_data[i], 0, list_data[i].Length);
-                stream.Read(bytes, 0, getter_client.ReceiveBufferSize);
-
-                Longitude_deg = Double.Parse(Encoding.UTF8.GetString(bytes));
+                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                words = responseData.Split(' ');
+                words[2] = words[2].Replace("\r\n", string.Empty);
+                words[2] = words[2].Replace("'", string.Empty);
+                Longitude_deg = Double.Parse(words[2]);
+                responseData = String.Empty;
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
             }
@@ -298,10 +362,6 @@ public class SimulatorModel : ISimulatorModel
     {
 
     }
-
-    //#### NEED TO FILL IN !! ####
-    // activate actuators
-
 
     public void NotifyPropertyChanged(string propName)
     {

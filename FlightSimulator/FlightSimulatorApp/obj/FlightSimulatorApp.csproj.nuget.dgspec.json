@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj": {}
+    "C:\\Users\\גדי\\source\\repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj": {
+    "C:\\Users\\גדי\\source\\repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
+        "projectUniqueName": "C:\\Users\\גדי\\source\\repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
         "projectName": "FlightSimulatorApp",
-        "projectPath": "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
+        "projectPath": "C:\\Users\\גדי\\source\\repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
         "packagesPath": "C:\\Users\\גדי\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\obj\\",
+        "outputPath": "C:\\Users\\גדי\\source\\repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\גדי\\AppData\\Roaming\\NuGet\\NuGet.Config",
