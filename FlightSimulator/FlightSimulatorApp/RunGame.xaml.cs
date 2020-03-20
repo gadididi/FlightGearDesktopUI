@@ -24,10 +24,10 @@ namespace FlightSimulatorApp
         public RunGame()
         {
             InitializeComponent();
-            joystick1 = new Joystick();
             exit_button = new Button();
             TcpClient tcpClient = new TcpClient();
             this.vm = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
+            joystick1 = new Joystick(this);
             DataContext = vm;
         }
 
@@ -41,5 +41,9 @@ namespace FlightSimulatorApp
             this.vm.set_ip_and_port(ip, Port);
         }
 
+        public void Move(double x, double y)
+        {
+            vm.setDirection(x, y);
+        }
     }
 }
