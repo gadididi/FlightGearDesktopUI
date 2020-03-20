@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,20 +21,25 @@ namespace FlightSimulatorApp.view
     /// 
     public partial class Joystick : UserControl
     {
-        private RunGame rg;
         private Point _positionInBlock;
-        private Point _midRectangle;
+        private double offSetX;
+        private double offSetY;
         private Rect myRectangle;
         private double recSize;
+        private SimulatorFlightViewModel vm;
+        private bool first_time = true;
 
-        bool first_time = true;
-
-        public Joystick(RunGame run)
+        public Joystick()
         {
             InitializeComponent();
-            rg = run;
             recSize = 100;
         }
+
+        public void Set_ViewModel(SimulatorFlightViewModel view)
+        {
+            vm = view;
+        }
+
 
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -46,18 +52,18 @@ namespace FlightSimulatorApp.view
                 Point position = this.knobBoarder.PointToScreen(new Point(0d, 0d)),
                 controlPosition = this.PointToScreen(new Point(0d, 0d));
 
-                position.X -= controlPosition.X;
-                position.Y -= controlPosition.Y;
+
+                offSetX = position.X;
+                offSetY = position.Y;
+
+                _positionInBlock = new Point(offSetX, offSetY);
 
 
                 myRectangle = new Rect();
-                myRectangle.Location = new Point(position.X - 90, position.Y - 90);
+                myRectangle.Location = new Point(position.X - 50, position.Y - 50);
                 myRectangle.Size = new Size(recSize, recSize);
-
-
-                _midRectangle = new Point((myRectangle.Right - myRectangle.Left)/2, (myRectangle.Bottom - myRectangle.Top)/2);
-
             }
+
             // capture the mouse (so the mouse move events are still triggered (even when the mouse is not above the control)
             this.CaptureMouse();
         }
@@ -68,20 +74,21 @@ namespace FlightSimulatorApp.view
             if (this.IsMouseCaptured)
             {
                 // get the parent container
-                var container = this as UIElement;
+                var container = this.knobBoarder as UIElement;
 
                 // get the position within the container
                 var mousePosition = e.GetPosition(container);
 
-                double XPos = mousePosition.X - _positionInBlock.X;
-                double YPos = mousePosition.Y - _positionInBlock.Y;
+                double XPos = mousePosition.X + myRectangle.Left - this.knobBoarder.ActualWidth / 4;
+                double YPos = mousePosition.Y + myRectangle.Top - this.knobBoarder.ActualHeight / 4;
+
 
                 // move the usercontrol.
                 if (myRectangle.Left > XPos)
                 {
                     if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(myRectangle.Left, YPos);
+                        Knob.RenderTransform = new TranslateTransform(myRectangle.Left - offSetX, YPos - offSetY);
                         Movement_Translation(myRectangle.Left, YPos);
                     }
                 }
@@ -89,7 +96,7 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(myRectangle.Right, YPos);
+                        Knob.RenderTransform = new TranslateTransform(myRectangle.Right - offSetX, YPos - offSetY);
                         Movement_Translation(myRectangle.Right, YPos);
                     }
                 }
@@ -97,7 +104,7 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Right > XPos && myRectangle.Left < XPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(XPos, myRectangle.Top);
+                        Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Top - offSetY);
                         Movement_Translation(XPos, myRectangle.Top);
                     }
                 }
@@ -105,13 +112,13 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Right > XPos && myRectangle.Left < XPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(XPos, myRectangle.Bottom);
+                        Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Bottom - offSetY);
                         Movement_Translation(XPos, myRectangle.Bottom);
                     }
                 }
                 else if (myRectangle.Contains(new Point(XPos, YPos)))
                 {
-                    Knob.RenderTransform = new TranslateTransform(XPos, YPos);
+                    Knob.RenderTransform = new TranslateTransform(XPos - offSetX, YPos - offSetY);
                     Movement_Translation(XPos, YPos);
                 }
             }
@@ -126,9 +133,18 @@ namespace FlightSimulatorApp.view
 
         private void Movement_Translation(double x, double y)
         {
-            double deltaX = (x - _midRectangle.X) / recSize * 2;
-            double deltaY = (y - _midRectangle.Y) / recSize * 2;
-            rg.Move(deltaX, deltaY);
+            double deltaX = (x - offSetX) / recSize * 2;
+            double deltaY = (y - offSetY) / recSize * -2;
+            Debug.WriteLine("deltaX,deltaY: " + deltaX + "," + deltaY);
+
+            try
+            {
+                vm.setDirection(deltaX, deltaY);
+            } catch (NullReferenceException e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            
         }
     }
 }
