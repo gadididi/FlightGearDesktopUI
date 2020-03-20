@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace FlightSimulatorApp.view
 {
     /// <summary>
@@ -19,13 +20,19 @@ namespace FlightSimulatorApp.view
     /// 
     public partial class Joystick : UserControl
     {
+        private RunGame rg;
         private Point _positionInBlock;
-        Rect myRectangle;
+        private Point _midRectangle;
+        private Rect myRectangle;
+        private double recSize;
+
         bool first_time = true;
 
-        public Joystick()
+        public Joystick(RunGame run)
         {
             InitializeComponent();
+            rg = run;
+            recSize = 100;
         }
 
 
@@ -36,7 +43,6 @@ namespace FlightSimulatorApp.view
                 _positionInBlock = Mouse.GetPosition(this);
                 first_time = false;
 
-
                 Point position = this.knobBoarder.PointToScreen(new Point(0d, 0d)),
                 controlPosition = this.PointToScreen(new Point(0d, 0d));
 
@@ -46,7 +52,10 @@ namespace FlightSimulatorApp.view
 
                 myRectangle = new Rect();
                 myRectangle.Location = new Point(position.X - 90, position.Y - 90);
-                myRectangle.Size = new Size(100, 100);
+                myRectangle.Size = new Size(recSize, recSize);
+
+
+                _midRectangle = new Point((myRectangle.Right - myRectangle.Left)/2, (myRectangle.Bottom - myRectangle.Top)/2);
 
             }
             // capture the mouse (so the mouse move events are still triggered (even when the mouse is not above the control)
@@ -68,10 +77,43 @@ namespace FlightSimulatorApp.view
                 double YPos = mousePosition.Y - _positionInBlock.Y;
 
                 // move the usercontrol.
-                if (myRectangle.Contains(new Point(XPos, YPos))) {
-                    Knob.RenderTransform = new TranslateTransform(XPos, YPos);
+                if (myRectangle.Left > XPos)
+                {
+                    if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
+                    {
+                        Knob.RenderTransform = new TranslateTransform(myRectangle.Left, YPos);
+                        Movement_Translation(myRectangle.Left, YPos);
+                    }
                 }
-                
+                else if (myRectangle.Right < XPos)
+                {
+                    if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
+                    {
+                        Knob.RenderTransform = new TranslateTransform(myRectangle.Right, YPos);
+                        Movement_Translation(myRectangle.Right, YPos);
+                    }
+                }
+                else if (myRectangle.Top > YPos)
+                {
+                    if (myRectangle.Right > XPos && myRectangle.Left < XPos)
+                    {
+                        Knob.RenderTransform = new TranslateTransform(XPos, myRectangle.Top);
+                        Movement_Translation(XPos, myRectangle.Top);
+                    }
+                }
+                else if (myRectangle.Bottom < YPos)
+                {
+                    if (myRectangle.Right > XPos && myRectangle.Left < XPos)
+                    {
+                        Knob.RenderTransform = new TranslateTransform(XPos, myRectangle.Bottom);
+                        Movement_Translation(XPos, myRectangle.Bottom);
+                    }
+                }
+                else if (myRectangle.Contains(new Point(XPos, YPos)))
+                {
+                    Knob.RenderTransform = new TranslateTransform(XPos, YPos);
+                    Movement_Translation(XPos, YPos);
+                }
             }
         }
 
@@ -80,6 +122,13 @@ namespace FlightSimulatorApp.view
             // release this control.
             this.ReleaseMouseCapture();
             Knob.RenderTransform = new TranslateTransform();
+        }
+
+        private void Movement_Translation(double x, double y)
+        {
+            double deltaX = (x - _midRectangle.X) / recSize * 2;
+            double deltaY = (y - _midRectangle.Y) / recSize * 2;
+            rg.Move(deltaX, deltaY);
         }
     }
 }

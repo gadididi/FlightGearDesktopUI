@@ -226,10 +226,11 @@ public class SimulatorModel : ISimulatorModel
         //Here you send to the server "value_to_send"
     }
 
+
     public void Connect(string ip, int port)
     {
-        getter_client.Connect(ip, port);
-        this.Start();
+        //getter_client.Connect(ip, port);
+        //this.Start();
     }
 
     public void Disconnect()

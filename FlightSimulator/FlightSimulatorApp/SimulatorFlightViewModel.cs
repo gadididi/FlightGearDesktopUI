@@ -10,7 +10,6 @@ namespace FlightSimulatorApp
     class SimulatorFlightViewModel : INotifyPropertyChanged 
     {
 
-
         private ISimulatorModel model;
 
         public double VM_Heading_Degree
@@ -76,6 +75,11 @@ namespace FlightSimulatorApp
                 aileron = value;
                 model.setAileron(aileron);
             }
+        }
+
+        public void setDirection(double x_rudder, double y_elevator)
+        {
+            model.setDirection(x_rudder, y_elevator);
         }
 
         public SimulatorFlightViewModel(ISimulatorModel m)
