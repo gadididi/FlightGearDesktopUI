@@ -1,4 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
+using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.ComponentModel;
 using System.Net.Sockets;
