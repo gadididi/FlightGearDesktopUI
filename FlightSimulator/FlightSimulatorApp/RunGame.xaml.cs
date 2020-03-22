@@ -1,4 +1,4 @@
-﻿using FlightSimulatorApp.view;
+using FlightSimulatorApp.view;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,14 +33,6 @@ namespace FlightSimulatorApp
             joystick1.Set_ViewModel(this.vm);
             DataContext = vm;
 
-            //Request the user's location
-            var loc = new Location(vm.VM_Latitude_deg, vm.VM_Longitude_deg);
-
-            //Add a pushpin at the user's location.
-            myPin = new Pushpin
-            {
-                Location = loc
-            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
