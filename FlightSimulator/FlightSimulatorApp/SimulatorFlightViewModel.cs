@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -6,8 +6,7 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp
 {
-
-    public class SimulatorFlightViewModel : INotifyPropertyChanged 
+    public class SimulatorFlightViewModel : INotifyPropertyChanged
     {
 
         private ISimulatorModel model;
