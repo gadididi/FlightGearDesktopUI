@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -29,10 +30,21 @@ public class SimulatorModel : ISimulatorModel
     private double roll_Degree;
     private double pitch_Degree;
     private double altimeter_FT;
-    
+
     //for the map
     private double longitude_deg;
     private double latitude_deg;
+    private Location location;
+
+    public Location Location
+    {
+        get { return location; }
+        set
+        {
+            location = value;
+            NotifyPropertyChanged("Location");
+        }
+    }
 
     public double Longitude_deg
     {
@@ -133,13 +145,13 @@ public class SimulatorModel : ISimulatorModel
 
         if (aileron < 1)
         {
-            if (aileron > 0)
+            if (aileron > -1)
             {
                 value_to_send = aileron;
             }
             else
             {
-                value_to_send = 0;
+                value_to_send = -1;
             }
         } 
         else
@@ -147,7 +159,7 @@ public class SimulatorModel : ISimulatorModel
             value_to_send = 1;
         }
         NetworkStream stream = getter_client.GetStream();
-        string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\r\n";
+        string msg = "set /controls/flight/aileron " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         bytes = new byte[getter_client.ReceiveBufferSize];
         stream.Write(bytes, 0, bytes.Length);
@@ -174,7 +186,7 @@ public class SimulatorModel : ISimulatorModel
             value_to_send = 1;
         }
         NetworkStream stream = getter_client.GetStream();
-        string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\r\n";
+        string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
@@ -200,9 +212,11 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-        string msg = "set /controls/flight/rudder " + value_to_send.ToString() + "\r\n";
+
+        string msg = "set /controls/flight/rudder " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
+
         //Here you send to the server "value_to_send"
 
         if (y_elevator < 1)
@@ -220,17 +234,18 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-         msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\r\n";
+         msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\n";
          bytes = System.Text.Encoding.ASCII.GetBytes(msg);
          stream.Write(bytes, 0, bytes.Length);
+
         //Here you send to the server "value_to_send"
     }
 
 
     public void Connect(string ip, int port)
     {
-        //getter_client.Connect(ip, port);
-        //this.Start();
+        getter_client.Connect(ip, port);
+        this.Start();
     }
 
     public void Disconnect()
@@ -246,16 +261,16 @@ public class SimulatorModel : ISimulatorModel
 
             NetworkStream stream = getter_client.GetStream();
             List<Byte[]> list_data = new List<Byte[]>();
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/heading-indicator/indicated-heading-deg\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-vertical-speed\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-ground-speed-kt\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/airspeed-indicator/indicated-speed-kt\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-altitude-ft\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/attitude-indicator/internal-roll-deg\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/attitude-indicator/internal-pitch-deg\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/altimeter/indicated-altitude-ft\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /position/latitude-deg\r\n"));
-            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /position/longitude-deg\r\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/heading-indicator/indicated-heading-deg\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-vertical-speed\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-ground-speed-kt\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/airspeed-indicator/indicated-speed-kt\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-altitude-ft\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/attitude-indicator/internal-roll-deg\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/attitude-indicator/internal-pitch-deg\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/altimeter/indicated-altitude-ft\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /position/latitude-deg\n"));
+            list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /position/longitude-deg\n"));
             Byte[] messageReceived = new byte[256];
             // String to store the response ASCII representation.
             String responseData = String.Empty;
@@ -266,92 +281,81 @@ public class SimulatorModel : ISimulatorModel
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 Int32 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                string[] words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Heading_Degree = Double.Parse(words[2]);
+                string value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+                Heading_Degree = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Vertical_Speed = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+                Vertical_Speed = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Ground_Speed = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Ground_Speed = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Air_Speed = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Air_Speed = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Altitude_FT = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Altitude_FT = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Roll_Degree = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Roll_Degree = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Pitch_Degree = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Pitch_Degree = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Altimeter_FT = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Altimeter_FT = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i++].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Latitude_deg = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Latitude_deg = Double.Parse(value);
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                words = responseData.Split(' ');
-                words[2] = words[2].Replace("\r\n", string.Empty);
-                words[2] = words[2].Replace("'", string.Empty);
-                Longitude_deg = Double.Parse(words[2]);
+                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+
+                Longitude_deg = Double.Parse(value);
                 responseData = String.Empty;
+                location = new Location(Latitude_deg, Longitude_deg);
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
             }
