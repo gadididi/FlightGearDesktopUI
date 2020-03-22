@@ -355,7 +355,9 @@ public class SimulatorModel : ISimulatorModel
 
                 Longitude_deg = Double.Parse(value);
                 responseData = String.Empty;
+
                 location = new Location(Latitude_deg, Longitude_deg);
+
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
             }

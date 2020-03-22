@@ -11,7 +11,10 @@
     <Grid>
 
         <Grid>
-            <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="37.806029,-122.407007" ZoomLevel="16"/>
+            <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="32.0055,34.8854" ZoomLevel="12">
+                <m:Pushpin x:Name="myPin" Location="{Binding VM_Location}" Heading="{Binding VM_Heading_Degree}">
+                </m:Pushpin>
+            </m:Map>
         </Grid>
 
         <Controls:Joystick x:Name="joystick1" Margin="660,355,-24,-106" RenderTransformOrigin="0.0,0.0" >
@@ -62,7 +65,7 @@
             <Label Content="Throttle" Height="44" Width="72"  Foreground="White" FontSize="18" FontFamily="Arial" RenderTransformOrigin="0.556,0.114"/>
             <Slider Minimum="0" Maximum="1"  Value="{Binding VM_Throttle}" Width="132" Height="22"/>
             <Label Content="Aileron" Height="44" Width="65"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Slider Minimum="0" Maximum="1" Value="{Binding VM_Aileron}" Width="131" Height="20"/>
+            <Slider Minimum="-1" Maximum="1" Value="{Binding VM_Aileron}" Width="131" Height="20"/>
         </StackPanel>
 
         <Grid.Background>

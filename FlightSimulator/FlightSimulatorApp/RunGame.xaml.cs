@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net.Sockets;
 using System.Diagnostics;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp
 {
@@ -31,6 +32,15 @@ namespace FlightSimulatorApp
             joystick1 = new Joystick();
             joystick1.Set_ViewModel(this.vm);
             DataContext = vm;
+
+            //Request the user's location
+            var loc = new Location(vm.VM_Latitude_deg, vm.VM_Longitude_deg);
+
+            //Add a pushpin at the user's location.
+            myPin = new Pushpin
+            {
+                Location = loc
+            };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -26,7 +26,9 @@ namespace FlightSimulatorApp.view
         private double offSetY;
         private Rect myRectangle;
         private double recSize;
-        private  static SimulatorFlightViewModel vm;
+
+        private static SimulatorFlightViewModel vm;
+
         private bool first_time = true;
 
         public Joystick()
