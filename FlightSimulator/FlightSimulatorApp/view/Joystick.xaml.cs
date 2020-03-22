@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -26,9 +26,7 @@ namespace FlightSimulatorApp.view
         private double offSetY;
         private Rect myRectangle;
         private double recSize;
-
         private static SimulatorFlightViewModel vm;
-
         private bool first_time = true;
 
         public Joystick()
@@ -47,19 +45,18 @@ namespace FlightSimulatorApp.view
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // when the mouse is down, get the position within the current control. (so the control top/left doesn't move to the mouse position)
-            if (first_time) { 
+            if (first_time)
+            {
                 _positionInBlock = Mouse.GetPosition(this);
                 first_time = false;
 
                 Point position = this.knobBoarder.PointToScreen(new Point(0d, 0d)),
                 controlPosition = this.PointToScreen(new Point(0d, 0d));
 
-
                 offSetX = position.X;
                 offSetY = position.Y;
 
                 _positionInBlock = new Point(offSetX, offSetY);
-
 
                 myRectangle = new Rect();
                 myRectangle.Location = new Point(position.X - 50, position.Y - 50);
@@ -142,11 +139,12 @@ namespace FlightSimulatorApp.view
             try
             {
                 vm.setDirection(deltaX, deltaY);
-            } catch (NullReferenceException e)
+            }
+            catch (NullReferenceException e)
             {
                 Debug.WriteLine(e.Message);
             }
-            
+
         }
     }
 }
