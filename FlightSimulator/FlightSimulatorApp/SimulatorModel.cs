@@ -1,4 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
+using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ public class SimulatorModel : ISimulatorModel
 {
     volatile Boolean stop;
     private TcpClient getter_client;
-    
+
 
     public SimulatorModel(TcpClient T)
     {
@@ -113,7 +113,7 @@ public class SimulatorModel : ISimulatorModel
     }
     public double Roll_Degree
     {
-        get { return roll_Degree; } 
+        get { return roll_Degree; }
         set
         {
             roll_Degree = value;
@@ -153,7 +153,7 @@ public class SimulatorModel : ISimulatorModel
             {
                 value_to_send = -1;
             }
-        } 
+        }
         else
         {
             value_to_send = 1;
@@ -234,9 +234,9 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-         msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\n";
-         bytes = System.Text.Encoding.ASCII.GetBytes(msg);
-         stream.Write(bytes, 0, bytes.Length);
+        msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\n";
+        bytes = System.Text.Encoding.ASCII.GetBytes(msg);
+        stream.Write(bytes, 0, bytes.Length);
 
         //Here you send to the server "value_to_send"
     }
@@ -256,7 +256,7 @@ public class SimulatorModel : ISimulatorModel
 
     public void Start()
     {
-        Thread T  = new Thread(delegate ()
+        Thread T = new Thread(delegate ()
         {
 
             NetworkStream stream = getter_client.GetStream();
