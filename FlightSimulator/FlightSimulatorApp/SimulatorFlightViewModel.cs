@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
-
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp
 {
-
-    class SimulatorFlightViewModel : INotifyPropertyChanged 
+    public class SimulatorFlightViewModel : INotifyPropertyChanged
     {
-
 
         private ISimulatorModel model;
 
+        public Location VM_Location
+        {
+            get { return new Location(model.Latitude_deg, model.Longitude_deg); }
+        }
         public double VM_Heading_Degree
         {
             get { return model.Heading_Degree; }
@@ -76,6 +78,11 @@ namespace FlightSimulatorApp
                 aileron = value;
                 model.setAileron(aileron);
             }
+        }
+
+        public void setDirection(double x_rudder, double y_elevator)
+        {
+            model.setDirection(x_rudder, y_elevator);
         }
 
         public SimulatorFlightViewModel(ISimulatorModel m)

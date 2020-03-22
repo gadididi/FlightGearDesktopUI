@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.ComponentModel;
 using System.Net.Sockets;
 
@@ -8,7 +9,6 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	public void Connect(string ip, int port);
 	public void Disconnect();
 	public void Start();
-
 
 	//airplane properties
 	public double Heading_Degree { get; set; }
@@ -24,7 +24,9 @@ public interface ISimulatorModel : INotifyPropertyChanged
 
 	public double Longitude_deg { get; set; }
 
-    public void setAileron(double aileron);
+	public Location Location { get; set; }
+
+	public void setAileron(double aileron);
 
 	public void setThrottle(double throttle);
 

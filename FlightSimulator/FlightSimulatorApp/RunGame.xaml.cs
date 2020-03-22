@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net.Sockets;
+using System.Diagnostics;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp
 {
@@ -24,11 +26,13 @@ namespace FlightSimulatorApp
         public RunGame()
         {
             InitializeComponent();
-            joystick1 = new Joystick();
             exit_button = new Button();
             TcpClient tcpClient = new TcpClient();
             this.vm = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
+            joystick1 = new Joystick();
+            joystick1.Set_ViewModel(this.vm);
             DataContext = vm;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
