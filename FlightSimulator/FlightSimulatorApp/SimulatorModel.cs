@@ -2,6 +2,7 @@ using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
@@ -344,19 +345,18 @@ public class SimulatorModel : ISimulatorModel
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                 value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-
                 Latitude_deg = Double.Parse(value);
+
                 responseData = String.Empty;
 
                 stream.Write(list_data[i], 0, list_data[i].Length);
                 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                 responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                 value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-
                 Longitude_deg = Double.Parse(value);
                 responseData = String.Empty;
 
-                location = new Location(Latitude_deg, Longitude_deg);
+                Location = new Location(Latitude_deg, Longitude_deg);
 
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 using Microsoft.Maps.MapControl.WPF;
+using System.Diagnostics;
 
 namespace FlightSimulatorApp
 {
@@ -13,7 +14,8 @@ namespace FlightSimulatorApp
 
         public Location VM_Location
         {
-            get { return new Location(model.Latitude_deg, model.Longitude_deg); }
+            get {
+                return model.Location; }
         }
         public double VM_Heading_Degree
         {
