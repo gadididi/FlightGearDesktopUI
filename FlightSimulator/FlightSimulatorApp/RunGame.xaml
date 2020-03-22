@@ -1,4 +1,4 @@
-﻿<Page x:Class="FlightSimulatorApp.RunGame"
+<Page x:Class="FlightSimulatorApp.RunGame"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,6 +16,7 @@
                 </m:Pushpin>
             </m:Map>
         </Grid>
+
 
         <Controls:Joystick x:Name="joystick1" Margin="660,355,-24,-106" RenderTransformOrigin="0.0,0.0" >
             <Controls:Joystick.RenderTransform>
