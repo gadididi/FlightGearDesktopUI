@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -33,6 +34,17 @@ public class SimulatorModel : ISimulatorModel
     //for the map
     private double longitude_deg;
     private double latitude_deg;
+    private Location location;
+
+    public Location Location
+    {
+        get { return location; }
+        set
+        {
+            location = value;
+            NotifyPropertyChanged("Location");
+        }
+    }
 
     public double Longitude_deg
     {
@@ -133,13 +145,13 @@ public class SimulatorModel : ISimulatorModel
 
         if (aileron < 1)
         {
-            if (aileron > 0)
+            if (aileron > -1)
             {
                 value_to_send = aileron;
             }
             else
             {
-                value_to_send = 0;
+                value_to_send = -1;
             }
         } 
         else
@@ -352,6 +364,9 @@ public class SimulatorModel : ISimulatorModel
                 words[2] = words[2].Replace("'", string.Empty);
                 Longitude_deg = Double.Parse(words[2]);
                 responseData = String.Empty;
+
+                location = new Location(Latitude_deg, Longitude_deg);
+
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
             }

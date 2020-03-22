@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.ComponentModel;
 using System.Net.Sockets;
 
@@ -23,6 +24,8 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	public double Latitude_deg { get; set; }
 
 	public double Longitude_deg { get; set; }
+
+	public Location Location { get; set; }
 
     public void setAileron(double aileron);
 
