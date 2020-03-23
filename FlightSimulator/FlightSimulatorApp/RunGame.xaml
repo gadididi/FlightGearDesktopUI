@@ -6,14 +6,16 @@
         xmlns:Controls="clr-namespace:FlightSimulatorApp.view"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" Background="White">
+        Title="MainWindow" Height="600" Width="1000" Background="White" 
+        >
 
     <Grid>
 
         <Grid>
-            <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="32.0055,34.8854" ZoomLevel="12">
-                <m:Pushpin x:Name="myPin" Location="{Binding VM_Location}" Heading="{Binding VM_Heading_Degree}">
+            <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="{Binding VM_Location}" ZoomLevel="12" >
+                <m:Pushpin x:Name="myPin" Location="{Binding VM_Location}" Heading="{Binding VM_Heading_Degree}" >
                 </m:Pushpin>
+                <Button x:Name="CenterButton" Height="40" Margin="0,0,508,360" Content="Center Me" Click="CenterButton_Click"/>
             </m:Map>
         </Grid>
 
