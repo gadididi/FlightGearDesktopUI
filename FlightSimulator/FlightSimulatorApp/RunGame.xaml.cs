@@ -32,7 +32,6 @@ namespace FlightSimulatorApp
             joystick1 = new Joystick();
             joystick1.Set_ViewModel(this.vm);
             DataContext = vm;
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -45,5 +44,16 @@ namespace FlightSimulatorApp
             this.vm.set_ip_and_port(ip, Port);
         }
 
+        private void CenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                myMap.Center = myPin.Location;
+            }
+            catch
+            {
+                Debug.WriteLine("Map Changed");
+            }
+        }
     }
 }

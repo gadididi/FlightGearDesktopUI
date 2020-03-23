@@ -6,5 +6,6 @@
         xmlns:Controls="clr-namespace:FlightSimulatorApp.view"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         mc:Ignorable="d"
-        Title="Flight Simulator Controller" Height="600" Width="1000" Background="White" Source="HomePage.xaml">
+        Title="Flight Simulator Controller" Height="600" Width="1000" Background="White" Source="HomePage.xaml" ResizeMode="CanResizeWithGrip" WindowState="Maximized" WindowStartupLocation="CenterOwner" SizeToContent="WidthAndHeight">
+
 </NavigationWindow>
