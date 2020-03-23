@@ -13,7 +13,8 @@ public class SimulatorModel : ISimulatorModel
     volatile Boolean stop;
     private TcpClient getter_client;
     private NetworkStream stream;
-
+    private Byte[] bytes = new byte[1024];
+    //private readonly object balanceLock = new object();
 
     public SimulatorModel(TcpClient T)
     {
@@ -162,10 +163,11 @@ public class SimulatorModel : ISimulatorModel
         }
         stream = getter_client.GetStream();
         string msg = "set /controls/flight/aileron " + value_to_send.ToString() + "\n";
-        Debug.WriteLine(msg);
-        Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
+
+        bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
+        Int32 bytes32 = stream.Read(bytes, 0, bytes.Length);
     }
 
     public void setThrottle(double throttle)
@@ -192,6 +194,7 @@ public class SimulatorModel : ISimulatorModel
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
+        Int32 bytes32 = stream.Read(bytes, 0, bytes.Length);
     }
 
     public void setDirection(double x_rudder, double y_elevator)
@@ -218,6 +221,7 @@ public class SimulatorModel : ISimulatorModel
         string msg = "set /controls/flight/rudder " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
+        Int32 bytes32 = stream.Read(bytes, 0, bytes.Length);
 
         //Here you send to the server "value_to_send"
 
@@ -239,6 +243,7 @@ public class SimulatorModel : ISimulatorModel
         msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\n";
         bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
+        bytes32 = stream.Read(bytes, 0, bytes.Length);
 
         //Here you send to the server "value_to_send"
     }
