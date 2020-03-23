@@ -12,6 +12,7 @@ public class SimulatorModel : ISimulatorModel
 {
     volatile Boolean stop;
     private TcpClient getter_client;
+    private NetworkStream stream;
 
 
     public SimulatorModel(TcpClient T)
@@ -159,10 +160,10 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-        NetworkStream stream = getter_client.GetStream();
+        stream = getter_client.GetStream();
         string msg = "set /controls/flight/aileron " + value_to_send.ToString() + "\n";
+        Debug.WriteLine(msg);
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
-        bytes = new byte[getter_client.ReceiveBufferSize];
         stream.Write(bytes, 0, bytes.Length);
         //Here you send to the server "value_to_send"
     }
@@ -186,7 +187,7 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-        NetworkStream stream = getter_client.GetStream();
+        stream = getter_client.GetStream();
         string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         stream.Write(bytes, 0, bytes.Length);
@@ -196,7 +197,7 @@ public class SimulatorModel : ISimulatorModel
     public void setDirection(double x_rudder, double y_elevator)
     {
         double value_to_send;
-        NetworkStream stream = getter_client.GetStream();
+        stream = getter_client.GetStream();
 
         if (x_rudder < 1)
         {
@@ -260,7 +261,7 @@ public class SimulatorModel : ISimulatorModel
         Thread T = new Thread(delegate ()
         {
 
-            NetworkStream stream = getter_client.GetStream();
+            stream = getter_client.GetStream();
             List<Byte[]> list_data = new List<Byte[]>();
             list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/heading-indicator/indicated-heading-deg\n"));
             list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-vertical-speed\n"));

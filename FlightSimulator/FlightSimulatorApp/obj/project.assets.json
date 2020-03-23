@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
+      "projectUniqueName": "C:\\c# programs\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
       "projectName": "FlightSimulatorApp",
-      "projectPath": "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
+      "projectPath": "C:\\c# programs\\FlightSimulator\\FlightSimulatorApp\\FlightSimulatorApp.csproj",
       "packagesPath": "C:\\Users\\גדי\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\גדי\\Source\\Repos\\FlightGearDesktopUI\\FlightSimulator\\FlightSimulatorApp\\obj\\",
+      "outputPath": "C:\\c# programs\\FlightSimulator\\FlightSimulatorApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\גדי\\AppData\\Roaming\\NuGet\\NuGet.Config",
