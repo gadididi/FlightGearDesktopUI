@@ -36,10 +36,12 @@ namespace FlightSimulatorApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Environment.Exit(1);
+            this.vm.Disconnect();
+            this.NavigationService.GoBack();
         }
         public void Set_IP_Port(string ip, string port)
         {
+
             int Port = Int32.Parse(port);
             this.vm.set_ip_and_port(ip, Port);
         }
@@ -53,6 +55,30 @@ namespace FlightSimulatorApp
             catch
             {
                 Debug.WriteLine("Map Changed");
+            }
+        }
+
+        private void errlog_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Debug.WriteLine("Error!");
+            if (errlog.Text == "Server TimeOut, Returning to Main Menu in 5 seconds")
+            {
+                System.Threading.Thread.Sleep(5000);
+                this.vm.Disconnect();
+                this.NavigationService.GoBack();
+            } 
+            else if (errlog.Text == "Something went wrong...")
+            {
+                //Let's decide here what to do
+                System.Threading.Thread.Sleep(5000);
+                this.vm.Disconnect();
+                this.NavigationService.GoBack();
+            }
+            else if (errlog.Text == "Failed to connect to the server")
+            {
+                System.Threading.Thread.Sleep(5000);
+                this.vm.Disconnect();
+                this.NavigationService.GoBack();
             }
         }
     }

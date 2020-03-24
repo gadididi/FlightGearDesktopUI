@@ -31,17 +31,18 @@
             </Controls:Joystick.RenderTransform>
         </Controls:Joystick>
 
-        <Button x:Name="exit_button" Content="Exit Simulator" Click="Button_Click">
+        <Button x:Name="exit_button" Content="Exit Simulator" Click="Button_Click" Margin="0,0,756,537" FontSize="36">
             <Button.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform ScaleX="0.05"/>
-                    <ScaleTransform ScaleY="0.05"/>
+                    <ScaleTransform ScaleX="0.5"/>
+                    <ScaleTransform ScaleY="0.5"/>
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform/>
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
+
         <StackPanel HorizontalAlignment="Left" Height="347" Margin="667,-2,0,0" VerticalAlignment="Top" Width="175" RenderTransformOrigin="0.482,0.474">
             <Label Content="Heading" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="Vertical Speed" Height="44" Width="191"  Foreground="White" FontSize="18" FontFamily="Arial"/>
@@ -54,14 +55,14 @@
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="352" Margin="847,-2,0,0" VerticalAlignment="Top" Width="186">
-            <Label Content="{Binding VM_Heading_Degree}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Vertical_Speed}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Ground_Speed}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Air_Speed}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Altitude_FT}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Roll_Degree}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Pitch_Degree}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Altimeter_FT}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Heading_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Vertical_Speed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Ground_Speed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Air_Speed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Altitude_FT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Roll_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Pitch_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Altimeter_FT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="161" Margin="842,355,0,0" VerticalAlignment="Top" Width="160" RenderTransformOrigin="0.453,0.27">
@@ -70,6 +71,7 @@
             <Label Content="Aileron" Height="44" Width="65"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Slider Minimum="-1" Maximum="1" Value="{Binding VM_Aileron}" Width="131" Height="20"/>
         </StackPanel>
+        <TextBox x:Name="errlog" Text="{Binding VM_Errlog, Mode=OneWay}" Margin="54,524,344,52" TextChanged="errlog_TextChanged"/>
 
         <Grid.Background>
             <ImageBrush ImageSource="background.jpg"/>

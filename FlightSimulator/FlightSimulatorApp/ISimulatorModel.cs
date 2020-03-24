@@ -26,6 +26,8 @@ public interface ISimulatorModel : INotifyPropertyChanged
 
 	public Location Location { get; set; }
 
+	public string Errlog { get; set; }
+
 	public void setAileron(double aileron);
 
 	public void setThrottle(double throttle);
