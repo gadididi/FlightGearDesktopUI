@@ -12,6 +12,13 @@ namespace FlightSimulatorApp
 
         private ISimulatorModel model;
 
+        public string VM_Errlog
+        {
+            get
+            {
+                return model.Errlog;
+            }
+        }
         public Location VM_Location
         {
             get {
@@ -106,6 +113,11 @@ namespace FlightSimulatorApp
         public void set_ip_and_port(string ip, int port)
         {
             this.model.Connect(ip, port);
+        }
+
+        public void Disconnect()
+        {
+            this.model.Disconnect();
         }
     }
 }
