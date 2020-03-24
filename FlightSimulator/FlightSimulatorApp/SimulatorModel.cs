@@ -23,7 +23,7 @@ public class SimulatorModel : ISimulatorModel
         this.getter_client = T;
         this.location = new Location(0, 0);
         //Sets the error log to default value
-        this.Errlog = " ";
+        this.Errlog = "Status: Connected";
         // Sets the receive time out using the ReceiveTimeout public property.
         getter_client.ReceiveTimeout = 10000;
 
@@ -51,6 +51,18 @@ public class SimulatorModel : ISimulatorModel
 
     //Error Log
     private string errlog;
+    //long lat log
+    private string long_lat;
+
+    public string Long_lat
+    {
+        get { return long_lat; }
+        set
+        {
+            long_lat = value;
+            NotifyPropertyChanged("Long_lat");
+        }
+    }
 
     public string Errlog
     {
@@ -184,7 +196,6 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-        stream = getter_client.GetStream();
         string msg = "set /controls/flight/aileron " + value_to_send.ToString() + "\n";
 
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
@@ -192,9 +203,6 @@ public class SimulatorModel : ISimulatorModel
         {
             this.To_send.Add(bytes);
         }
-        //stream.Write(bytes, 0, bytes.Length);
-        //Here you send to the server "value_to_send"
-        //Int32 bytes32 = stream.Read(bytes, 0, bytes.Length);
     }
 
     public void setThrottle(double throttle)
@@ -216,22 +224,18 @@ public class SimulatorModel : ISimulatorModel
         {
             value_to_send = 1;
         }
-        stream = getter_client.GetStream();
+
         string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         lock (balanceLock)
         {
             this.To_send.Add(bytes);
         }
-        //stream.Write(bytes, 0, bytes.Length);
-        //Here you send to the server "value_to_send"
-        //Int32 bytes32 = stream.Read(bytes, 0, bytes.Length);
     }
 
     public void setDirection(double x_rudder, double y_elevator)
     {
         double value_to_send;
-        stream = getter_client.GetStream();
 
         if (x_rudder < 1)
         {
@@ -255,10 +259,6 @@ public class SimulatorModel : ISimulatorModel
         {
             this.To_send.Add(bytes);
         }
-        //stream.Write(bytes, 0, bytes.Length);
-        //Int32 bytes32 = stream.Read(bytes, 0, bytes.Length);
-
-        //Here you send to the server "value_to_send"
 
         if (y_elevator < 1)
         {
@@ -281,10 +281,6 @@ public class SimulatorModel : ISimulatorModel
         {
             this.To_send.Add(bytes2);
         }
-        //stream.Write(bytes2, 0, bytes2.Length);
-        //bytes32 = stream.Read(bytes2, 0, bytes2.Length);
-
-        //Here you send to the server "value_to_send"
     }
 
 
@@ -331,15 +327,23 @@ public class SimulatorModel : ISimulatorModel
             {
                 lock (balanceLock)
                 {
-                    if (this.To_send.Count != 0)
+                    try
                     {
-                        int j = 0;
-                        do
+                        if (this.To_send.Count != 0)
                         {
-                            stream.Write(To_send[j], 0, To_send[j].Length);
-                            Int32 bytes32 = stream.Read(To_send[j], 0, To_send[j].Length);
-                            To_send.Remove(To_send[j]);
-                        } while (this.To_send.Count != 0);
+                            int j = 0;
+                            do
+                            {
+
+                                stream.Write(To_send[j], 0, To_send[j].Length);
+                                Int32 bytes32 = stream.Read(To_send[j], 0, To_send[j].Length);
+                                To_send.Remove(To_send[j]);
+
+                            } while (this.To_send.Count != 0);
+                        }
+                    } catch
+                    {
+                        Errlog = "No connection";
                     }
                 }
 
@@ -420,6 +424,20 @@ public class SimulatorModel : ISimulatorModel
                     responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                     value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
                     Longitude_deg = Double.Parse(value);
+
+                    if (Latitude_deg > 90 || Latitude_deg < -90)
+                    {
+                        Long_lat = "Wrong: out of range";
+                    }
+
+                    else if (Longitude_deg > 180 || Longitude_deg < -180)
+                    {
+                        Long_lat = "Wrong: out of range";
+                    }
+                    else
+                    {
+                        Long_lat = Latitude_deg.ToString().Substring(0, 6) + ", " + Longitude_deg.ToString().Substring(0, 6);
+                    }
                     responseData = String.Empty;
 
                     Location = new Location(Latitude_deg, Longitude_deg);
@@ -427,6 +445,10 @@ public class SimulatorModel : ISimulatorModel
                 catch (IOException)
                 {
                     Errlog = "Conection Timeout";
+                }
+                catch
+                {
+                    Errlog = "Bad Input";
                 }
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz

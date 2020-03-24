@@ -10,6 +10,7 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	public void Disconnect();
 	public void Start();
 
+	public string Long_lat { get; set; }
 	//airplane properties
 	public double Heading_Degree { get; set; }
 	public double Vertical_Speed { get; set; }

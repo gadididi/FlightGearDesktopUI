@@ -12,6 +12,13 @@ namespace FlightSimulatorApp
 
         private ISimulatorModel model;
 
+        public string VM_Long_lat
+        {
+            get
+            {
+                return model.Long_lat;
+            }
+        }
         public string VM_Errlog
         {
             get
