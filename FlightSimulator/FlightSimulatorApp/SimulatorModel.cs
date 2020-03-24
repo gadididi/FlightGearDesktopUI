@@ -21,6 +21,14 @@ public class SimulatorModel : ISimulatorModel
     {
         this.stop = false;
         this.getter_client = T;
+        //Sets the error log to default value
+        this.Errlog = "No problems detected";
+        // Sets the receive time out using the ReceiveTimeout public property.
+        getter_client.ReceiveTimeout = 10000;
+
+        // Gets the receive time out using the ReceiveTimeout public property.
+        if (getter_client.ReceiveTimeout == 10000)
+            Debug.WriteLine("The receive time out limit was successfully set " + getter_client.ReceiveTimeout.ToString());
     }
 
     // event
@@ -39,6 +47,19 @@ public class SimulatorModel : ISimulatorModel
     private double longitude_deg;
     private double latitude_deg;
     private Location location;
+
+    //Error Log
+    private string errlog;
+
+    public string Errlog
+    {
+        get { return errlog; }
+        set
+        {
+            errlog = value;
+            NotifyPropertyChanged("Errlog");
+        }
+    }
 
     public Location Location
     {
