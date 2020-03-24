@@ -54,14 +54,14 @@
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="352" Margin="847,-2,0,0" VerticalAlignment="Top" Width="186">
-            <Label Content="{Binding VM_Heading_Degree}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Vertical_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Ground_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Air_Speed}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Altitude_FT}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Roll_Degree}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Pitch_Degree}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Altimeter_FT}" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Heading_Degree}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Vertical_Speed}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Ground_Speed}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Air_Speed}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Altitude_FT}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Roll_Degree}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Pitch_Degree}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_Altimeter_FT}" ContentStringFormat="0.00" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="161" Margin="842,355,0,0" VerticalAlignment="Top" Width="160" RenderTransformOrigin="0.453,0.27">
