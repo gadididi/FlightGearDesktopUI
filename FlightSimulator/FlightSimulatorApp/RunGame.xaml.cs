@@ -62,8 +62,21 @@ namespace FlightSimulatorApp
         {
             if (errlog.Text == "Conection Timeout")
             {
-                System.Threading.Thread.Sleep(2000);
                 this.vm.Disconnect();
+                MessageBox.Show("It seems that you've lost connecting to the server, Please go back to the Main Menu and try again");
+                return;
+            }
+            else if (errlog.Text == "TCP conection to the server failed")
+            {
+                this.vm.Disconnect();
+                MessageBox.Show("Connection failed, Please go back to the Main Menu and try again");
+                return;
+            }
+            else if (errlog.Text == "No connection")
+            {
+                this.vm.Disconnect();
+                MessageBox.Show("Stop messing around with the simulator and try to reconnect to the server.");
+                return;
             }
         }
     }

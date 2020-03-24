@@ -10,7 +10,6 @@
         >
 
     <Grid>
-
         <Grid>
             <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="{Binding VM_Location}" ZoomLevel="12" >
                 <m:Pushpin x:Name="myPin" Location="{Binding VM_Location}" Heading="{Binding VM_Heading_Degree}" >
@@ -62,6 +61,13 @@
             <Label Content="{Binding VM_Roll_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Pitch_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Altimeter_FT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+        </StackPanel>
+        
+        <StackPanel HorizontalAlignment="Left" Height="74" Margin="360,15,0,0" VerticalAlignment="Top" Width="268" >
+            <Label Content="{Binding VM_Long_lat}" ContentStringFormat="0.00" Height="37" Width="248"  Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Left" Height="74" Margin="155,16,0,0" VerticalAlignment="Top" Width="200" >
+            <Label Content="Latitude, Longitude:" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="161" Margin="842,355,0,0" VerticalAlignment="Top" Width="160" RenderTransformOrigin="0.453,0.27">
