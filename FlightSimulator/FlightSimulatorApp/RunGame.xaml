@@ -19,7 +19,6 @@
             </m:Map>
         </Grid>
 
-
         <Controls:Joystick x:Name="joystick1" Margin="660,355,-24,-106" RenderTransformOrigin="0.0,0.0" >
             <Controls:Joystick.RenderTransform>
                 <TransformGroup>
@@ -71,7 +70,9 @@
             <Label Content="Aileron" Height="44" Width="65"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Slider Minimum="-1" Maximum="1" Value="{Binding VM_Aileron}" Width="131" Height="20"/>
         </StackPanel>
-        <TextBox x:Name="errlog" Text="{Binding VM_Errlog, Mode=OneWay}" Margin="54,524,344,52" TextChanged="errlog_TextChanged"/>
+
+        <Rectangle  Margin="54,524,344,52" Fill="#FFFFC5C5"/>
+        <TextBlock x:Name="errlog" Text="{Binding VM_Errlog, Mode=OneWay, NotifyOnTargetUpdated=True}" Margin="54,524,344,52" TargetUpdated="errlog_TargetUpdated"/>
 
         <Grid.Background>
             <ImageBrush ImageSource="background.jpg"/>
