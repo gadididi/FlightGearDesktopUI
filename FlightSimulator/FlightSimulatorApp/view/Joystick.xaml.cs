@@ -135,7 +135,7 @@ namespace FlightSimulatorApp.view
         {
             double deltaX = (x - offSetX) / recSize * 2;
             double deltaY = (y - offSetY) / recSize * -2;
-            Debug.WriteLine("deltaX,deltaY: " + deltaX + "," + deltaY);
+            //Debug.WriteLine("deltaX,deltaY: " + deltaX + "," + deltaY);
 
             try
             {
