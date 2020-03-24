@@ -21,8 +21,9 @@ public class SimulatorModel : ISimulatorModel
     {
         this.stop = false;
         this.getter_client = T;
+        this.location = new Location(0, 0);
         //Sets the error log to default value
-        this.Errlog = "No problems detected";
+        this.Errlog = " ";
         // Sets the receive time out using the ReceiveTimeout public property.
         getter_client.ReceiveTimeout = 10000;
 
@@ -289,8 +290,16 @@ public class SimulatorModel : ISimulatorModel
 
     public void Connect(string ip, int port)
     {
-        getter_client.Connect(ip, port);
-        this.Start();
+        try
+        {
+            getter_client.Connect(ip, port);
+            this.Start();
+        }
+        catch
+        {
+            Errlog = "TCP conection to the server failed";
+        }
+
     }
 
     public void Disconnect()
@@ -333,85 +342,92 @@ public class SimulatorModel : ISimulatorModel
                         } while (this.To_send.Count != 0);
                     }
                 }
+
                 int i = 0;
-                
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                Int32 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                string value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                Heading_Degree = Double.Parse(value);
-                responseData = String.Empty;
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                Vertical_Speed = Double.Parse(value);
-                responseData = String.Empty;
+                try
+                {
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    Int32 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    string value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    Heading_Degree = Double.Parse(value);
+                    responseData = String.Empty;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    Vertical_Speed = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
 
-                Ground_Speed = Double.Parse(value);
-                responseData = String.Empty;
+                    Ground_Speed = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
 
-                Air_Speed = Double.Parse(value);
-                responseData = String.Empty;
+                    Air_Speed = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
 
-                Altitude_FT = Double.Parse(value);
-                responseData = String.Empty;
+                    Altitude_FT = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
 
-                Roll_Degree = Double.Parse(value);
-                responseData = String.Empty;
+                    Roll_Degree = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
 
-                Pitch_Degree = Double.Parse(value);
-                responseData = String.Empty;
+                    Pitch_Degree = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
 
-                Altimeter_FT = Double.Parse(value);
-                responseData = String.Empty;
+                    Altimeter_FT = Double.Parse(value);
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i++].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-                Latitude_deg = Double.Parse(value);
+                    stream.Write(list_data[i], 0, list_data[i++].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+                    Latitude_deg = Double.Parse(value);
 
-                responseData = String.Empty;
+                    responseData = String.Empty;
 
-                stream.Write(list_data[i], 0, list_data[i].Length);
-                bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                Longitude_deg = Double.Parse(value);
-                responseData = String.Empty;
+                    stream.Write(list_data[i], 0, list_data[i].Length);
+                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    Longitude_deg = Double.Parse(value);
+                    responseData = String.Empty;
 
-                Location = new Location(Latitude_deg, Longitude_deg);
+                    Location = new Location(Latitude_deg, Longitude_deg);
+                }
+                catch (IOException)
+                {
+                    Errlog = "Conection Timeout";
+                }
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
             }

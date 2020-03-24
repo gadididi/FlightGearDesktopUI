@@ -58,27 +58,12 @@ namespace FlightSimulatorApp
             }
         }
 
-        private void errlog_TextChanged(object sender, TextChangedEventArgs e)
+        private void errlog_TargetUpdated(object sender, DataTransferEventArgs e)
         {
-            Debug.WriteLine("Error!");
-            if (errlog.Text == "Server TimeOut, Returning to Main Menu in 5 seconds")
+            if (errlog.Text == "Conection Timeout")
             {
-                System.Threading.Thread.Sleep(5000);
+                System.Threading.Thread.Sleep(2000);
                 this.vm.Disconnect();
-                this.NavigationService.GoBack();
-            } 
-            else if (errlog.Text == "Something went wrong...")
-            {
-                //Let's decide here what to do
-                System.Threading.Thread.Sleep(5000);
-                this.vm.Disconnect();
-                this.NavigationService.GoBack();
-            }
-            else if (errlog.Text == "Failed to connect to the server")
-            {
-                System.Threading.Thread.Sleep(5000);
-                this.vm.Disconnect();
-                this.NavigationService.GoBack();
             }
         }
     }
