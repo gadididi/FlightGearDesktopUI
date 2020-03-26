@@ -11,12 +11,16 @@ using System.Threading;
 
 public class SimulatorModel : ISimulatorModel
 {
+    // stop for stop the thread in the staet method
+    // tcpclient for the comunication with the server
+
     volatile Boolean stop;
     private TcpClient getter_client;
     private NetworkStream stream;
     private List<Byte[]> To_send = new List<Byte[]>();
     private readonly object balanceLock = new object();
 
+    //CTOR 
     public SimulatorModel(TcpClient T)
     {
         this.stop = false;
@@ -35,6 +39,7 @@ public class SimulatorModel : ISimulatorModel
     // event
     public event PropertyChangedEventHandler PropertyChanged;
 
+    // 8 members for dashboard
     private double heading_Degree;
     private double vertical_Speed;
     private double ground_Speed;
@@ -44,16 +49,18 @@ public class SimulatorModel : ISimulatorModel
     private double pitch_Degree;
     private double altimeter_FT;
 
-    //for the map
+    //members for the map
     private double longitude_deg;
     private double latitude_deg;
     private Location location;
-
-    //Error Log
-    private string errlog;
-    //long lat log
     private string long_lat;
 
+    //member Error Log
+    private string errlog;
+
+    //here 8 property for dashboard
+    // more three for pin in map
+    // Errlog property for sign kinds of err to the view by binding
     public string Long_lat
     {
         get { return long_lat; }
@@ -177,11 +184,13 @@ public class SimulatorModel : ISimulatorModel
         }
     }
 
+    // commands for set the value of aileron ,add the path to the send list
     public void setAileron(double aileron)
     {
         double value_to_send;
 
-        if (aileron < 1)
+        //checking the range value and change it according to aileron range
+        if (aileron < 1) 
         {
             if (aileron > -1)
             {
@@ -205,10 +214,12 @@ public class SimulatorModel : ISimulatorModel
         }
     }
 
+    // commands for set the value of throttle ,add the path to the send list
     public void setThrottle(double throttle)
     {
         double value_to_send;
 
+        //checking the range value and change it according to throttle range
         if (throttle < 1)
         {
             if (throttle > 0)
@@ -233,10 +244,12 @@ public class SimulatorModel : ISimulatorModel
         }
     }
 
+    // commands for set the value of x_rudder and  y_elevator,add the path to the send list
     public void setDirection(double x_rudder, double y_elevator)
     {
         double value_to_send;
 
+        //checking the range value and change it according to x_rudder range
         if (x_rudder < 1)
         {
             if (x_rudder > -1)
@@ -260,6 +273,7 @@ public class SimulatorModel : ISimulatorModel
             this.To_send.Add(bytes);
         }
 
+        //checking the range value and change it according to y_elevator range
         if (y_elevator < 1)
         {
             if (y_elevator > -1)
@@ -283,7 +297,8 @@ public class SimulatorModel : ISimulatorModel
         }
     }
 
-
+    //create connection with the server(simulator)
+    // catch the exp if the server ip or port does not exsit 
     public void Connect(string ip, int port)
     {
         try
@@ -298,12 +313,17 @@ public class SimulatorModel : ISimulatorModel
 
     }
 
+    // stop the thread and log out
     public void Disconnect()
     {
         getter_client.Close();
         this.stop = true;
     }
 
+    //this method sample 10 value from the server-simulator in another thread and update the properties 
+    // moreover this method first of all send the commands in the "list to send" member (setter commands)
+    // we write the 10 getter properrty without little for\while loop becouse we found out that deployed the code
+    // faster than write in mini loop. So we coded like that.
     public void Start()
     {
         Thread T = new Thread(delegate ()
@@ -325,6 +345,7 @@ public class SimulatorModel : ISimulatorModel
             String responseData = String.Empty;
             while (!this.stop)
             {
+                //lock this becouse we touch the list to send in 2 places
                 lock (balanceLock)
                 {
                     try
@@ -348,6 +369,8 @@ public class SimulatorModel : ISimulatorModel
                 }
 
                 int i = 0;
+
+                // every property we write the protocol to the server ,read the answer ,encoding ,parse it and update.
                 try
                 {
                     stream.Write(list_data[i], 0, list_data[i++].Length);
@@ -425,6 +448,7 @@ public class SimulatorModel : ISimulatorModel
                     value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
                     Longitude_deg = Double.Parse(value);
 
+                    //if the long or lat out of range update the err log !!
                     if (Latitude_deg > 90 || Latitude_deg < -90)
                     {
                         Long_lat = "Wrong: out of range";
@@ -442,10 +466,12 @@ public class SimulatorModel : ISimulatorModel
 
                     Location = new Location(Latitude_deg, Longitude_deg);
                 }
+                // catch if passed 10 sec and the server did not return answer 'update the errLog 
                 catch (IOException)
                 {
                     Errlog = "Conection Timeout";
                 }
+                // if we get bad input from the server ,show bad input in the screen 
                 catch
                 {
                     Errlog = "Bad Input";
@@ -457,11 +483,8 @@ public class SimulatorModel : ISimulatorModel
         T.Start();
 
     }
-    public void run()
-    {
 
-    }
-
+    // this method activate the observable DP 
     public void NotifyPropertyChanged(string propName)
     {
         if (this.PropertyChanged != null)
