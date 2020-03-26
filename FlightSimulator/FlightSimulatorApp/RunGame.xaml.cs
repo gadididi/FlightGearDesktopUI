@@ -17,35 +17,42 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorApp
 {
-    /// <summary>
     /// Interaction logic for RunGame.xaml
-    /// </summary>
     public partial class RunGame : Page
     {
+        //ViewModel
         SimulatorFlightViewModel vm;
+        //Intiallize the RunGame component
         public RunGame()
         {
             InitializeComponent();
             exit_button = new Button();
+            //Set ViewModel and Model
             TcpClient tcpClient = new TcpClient();
             this.vm = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
+
+            //Set Joystick
             joystick1 = new Joystick();
             joystick1.Set_ViewModel(this.vm);
-            DataContext = vm;
+
+            DataContext = vm; //Set DataContext
         }
 
+        //Exit button click: return to main page
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.vm.Disconnect();
             this.NavigationService.GoBack();
         }
+
+        //Sets the IP and port for connection
         public void Set_IP_Port(string ip, string port)
         {
-
             int Port = Int32.Parse(port);
             this.vm.set_ip_and_port(ip, Port);
         }
 
+        //Center the map around the airplane
         private void CenterButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -54,25 +61,26 @@ namespace FlightSimulatorApp
             }
             catch
             {
-                Debug.WriteLine("Map Changed");
+                Debug.WriteLine("Map hasn't been able to center around the plane");
             }
         }
 
+        //When the error log updates, show different dialogs (pop-up) and terminate the connection
         private void errlog_TargetUpdated(object sender, DataTransferEventArgs e)
         {
-            if (errlog.Text == "Conection Timeout")
+            if (errlog.Text == "Conection Timeout") //TimeOut
             {
                 this.vm.Disconnect();
                 MessageBox.Show("It seems that you've lost connecting to the server, Please go back to the Main Menu and try again");
                 return;
             }
-            else if (errlog.Text == "TCP conection to the server failed")
+            else if (errlog.Text == "TCP conection to the server failed") //TCP handshake failed
             {
                 this.vm.Disconnect();
                 MessageBox.Show("Connection failed, Please go back to the Main Menu and try again");
                 return;
             }
-            else if (errlog.Text == "No connection")
+            else if (errlog.Text == "No connection") //When messing with the joysticks after the connection was lost.
             {
                 this.vm.Disconnect();
                 MessageBox.Show("Stop messing around with the simulator and try to reconnect to the server.");
