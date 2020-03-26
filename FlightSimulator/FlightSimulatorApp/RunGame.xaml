@@ -29,7 +29,7 @@
             </Controls:Joystick.RenderTransform>
         </Controls:Joystick>
 
-        <Button x:Name="exit_button" Content="Exit Simulator" Click="Button_Click" Margin="0,0,756,537" FontSize="36">
+        <Button x:Name="exit_button" Content="Main Menu" Click="Button_Click" Margin="0,0,756,537" FontSize="36">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="0.5"/>

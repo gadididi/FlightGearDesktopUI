@@ -369,84 +369,147 @@ public class SimulatorModel : ISimulatorModel
                 }
 
                 int i = 0;
-
+                Int32 bytes;
+                string value;
                 // every property we write the protocol to the server ,read the answer ,encoding ,parse it and update.
                 try
                 {
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    Int32 bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    string value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                    Heading_Degree = Double.Parse(value);
-                    responseData = String.Empty;
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                    Vertical_Speed = Double.Parse(value);
-                    responseData = String.Empty;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Heading_Degree = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Heading_Degree";
+                    }
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Vertical_Speed = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Vertical_Speed";
+                    }
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Ground_Speed = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Ground_Speed";
+                    }
 
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Air_Speed = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Air_Speed";
+                    }
 
-                    Ground_Speed = Double.Parse(value);
-                    responseData = String.Empty;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Altitude_FT = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Altitude_FT";
+                    }
 
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Roll_Degree = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Roll_Degree";
+                    }
 
-                    Air_Speed = Double.Parse(value);
-                    responseData = String.Empty;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+                        Pitch_Degree = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Pitch_Degree";
+                    }
 
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Altimeter_FT = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Altimeter_FT";
+                    }
 
-                    Altitude_FT = Double.Parse(value);
-                    responseData = String.Empty;
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
+                        Latitude_deg = Double.Parse(value);
+                        responseData = String.Empty;
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Latitude_deg";
+                    }
 
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-
-                    Roll_Degree = Double.Parse(value);
-                    responseData = String.Empty;
-
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-
-                    Pitch_Degree = Double.Parse(value);
-                    responseData = String.Empty;
-
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-
-                    Altimeter_FT = Double.Parse(value);
-                    responseData = String.Empty;
-
-                    stream.Write(list_data[i], 0, list_data[i++].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-                    Latitude_deg = Double.Parse(value);
-
-                    responseData = String.Empty;
-
-                    stream.Write(list_data[i], 0, list_data[i].Length);
-                    bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
-                    value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                    Longitude_deg = Double.Parse(value);
+                    try
+                    {
+                        stream.Write(list_data[i], 0, list_data[i].Length);
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
+                        value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
+                        Longitude_deg = Double.Parse(value);
+                    }
+                    catch (FormatException)
+                    {
+                        Errlog = "Bad Input: Longitude_deg";
+                    }
 
                     //if the long or lat out of range update the err log !!
                     if (Latitude_deg > 90 || Latitude_deg < -90)
@@ -470,11 +533,6 @@ public class SimulatorModel : ISimulatorModel
                 catch (IOException)
                 {
                     Errlog = "Conection Timeout";
-                }
-                // if we get bad input from the server ,show bad input in the screen 
-                catch
-                {
-                    Errlog = "Bad Input";
                 }
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
