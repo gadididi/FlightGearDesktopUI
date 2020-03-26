@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
-
+using System.Diagnostics;
 
 namespace FlightSimulatorApp
 {
@@ -20,17 +20,22 @@ namespace FlightSimulatorApp
     /// </summary>
     public partial class HomePage : Page
     {
+        //run is the next page
         RunGame run;
+
+        //CTOR
         public HomePage()
         {
             InitializeComponent();
         }
 
+        //exit click ,exit the game
         private void Button_Click_Exit(object sender, RoutedEventArgs e)
         {
             System.Environment.Exit(1);
         }
 
+        // click fly start the game only if the port and ip standard , else show  "wrong IP or port"
         private void Button_Click_Fly(object sender, RoutedEventArgs e)
         {
             if (Check_ip() && Check_port()) // !!!! OR IP AND PORT IS GOOD
@@ -43,6 +48,7 @@ namespace FlightSimulatorApp
                 mistake.Text = "  wrong IP or port";
             }
         }
+        //the user in the text box of ip
         private void ip_GotFocus(object sender, RoutedEventArgs e)
         {
             if (ip.Text == "Enter IP")
@@ -50,7 +56,7 @@ namespace FlightSimulatorApp
                 ip.Text = "";
             }
         }
-
+        //the user in the text port box
         private void port_GotFocus(object sender, RoutedEventArgs e)
         {
             if (port.Text == "Enter port")
@@ -59,6 +65,7 @@ namespace FlightSimulatorApp
             }
         }
 
+        // the user leave the ip box empty , return the diffualt sentence
         private void ip_LostFocus(object sender, RoutedEventArgs e)
         {
             if (ip.Text == "")
@@ -67,6 +74,7 @@ namespace FlightSimulatorApp
             }
         }
 
+        // the user leave the port box empty , return the Default sentence
         private void port_LostFocus(object sender, RoutedEventArgs e)
         {
             if (port.Text == "")
@@ -75,6 +83,7 @@ namespace FlightSimulatorApp
             }
         }
 
+        // get the default ip + port from the app config file
         private void def_Click(object sender, RoutedEventArgs e)
         {
             string myIP = ConfigurationManager.AppSettings["ip"];
@@ -82,6 +91,8 @@ namespace FlightSimulatorApp
             port.Text = myPort;
             ip.Text = myIP;
         }
+
+        //checking if the ip is standard
         private bool Check_ip()
         {
             string phrase = this.ip.Text;
@@ -96,11 +107,10 @@ namespace FlightSimulatorApp
                         return false;
                     }
                 }
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
                 catch (Exception e)
-#pragma warning restore CS0168 // The variable 'e' is declared but never used
                 {
                     // show not valid port on the screen
+                    Debug.WriteLine(e.Message);
                     return false;
                 }
             }
@@ -110,6 +120,7 @@ namespace FlightSimulatorApp
             }
             return true;
         }
+        //checking if the port is standard
         private bool Check_port()
         {
             int m;
@@ -117,11 +128,10 @@ namespace FlightSimulatorApp
             {
                 m = Int32.Parse(port.Text);
             }
-#pragma warning disable CS0168 // The variable 'e' is declared but never used
             catch (FormatException e)
-#pragma warning restore CS0168 // The variable 'e' is declared but never used
             {
                 // show not valid port on the screen
+                Debug.WriteLine(e.Message);
                 return false;
             }
             if (m < 0 || (m >= 0 && m <= 1023) || m > 65535)

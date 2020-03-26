@@ -27,8 +27,10 @@ public interface ISimulatorModel : INotifyPropertyChanged
 
 	public Location Location { get; set; }
 
+	//err log property to recognize things that happen in the communications
 	public string Errlog { get; set; }
 
+	//three commands to send to the server(simulator)
 	public void setAileron(double aileron);
 
 	public void setThrottle(double throttle);
