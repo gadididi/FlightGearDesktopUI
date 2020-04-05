@@ -70,20 +70,18 @@ namespace FlightSimulatorApp
         {
             if (errlog.Text == "Conection Timeout") //TimeOut
             {
-                this.vm.Disconnect();
-                MessageBox.Show("It seems that you've lost connecting to the server, Please go back to the Main Menu and try again");
                 return;
             }
             else if (errlog.Text == "TCP conection to the server failed") //TCP handshake failed
             {
                 this.vm.Disconnect();
-                MessageBox.Show("Connection failed, Please go back to the Main Menu and try again");
-                return;
-            }
-            else if (errlog.Text == "No connection") //When messing with the joysticks after the connection was lost.
-            {
-                this.vm.Disconnect();
-                MessageBox.Show("Stop messing around with the simulator and try to reconnect to the server.");
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+
+                if (NavigationService.CanGoBack)
+                {
+                    this.NavigationService.GoBack();
+                }
+
                 return;
             }
         }

@@ -301,15 +301,8 @@ public class SimulatorModel : ISimulatorModel
     // catch the exp if the server ip or port does not exsit 
     public void Connect(string ip, int port)
     {
-        try
-        {
-            getter_client.Connect(ip, port);
-            this.Start();
-        }
-        catch
-        {
-            Errlog = "TCP conection to the server failed";
-        }
+        getter_client.Connect(ip, port);
+        this.Start();
 
     }
 
@@ -376,6 +369,7 @@ public class SimulatorModel : ISimulatorModel
                 {
                     try
                     {
+                        Errlog = "Status: Connected";
                         stream.Write(list_data[i], 0, list_data[i++].Length);
                         bytes = stream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
@@ -533,6 +527,7 @@ public class SimulatorModel : ISimulatorModel
                 catch (IOException)
                 {
                     Errlog = "Conection Timeout";
+                    Thread.Sleep(1000);
                 }
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz

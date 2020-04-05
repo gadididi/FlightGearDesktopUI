@@ -38,11 +38,20 @@ namespace FlightSimulatorApp
         // click fly start the game only if the port and ip standard , else show  "wrong IP or port"
         private void Button_Click_Fly(object sender, RoutedEventArgs e)
         {
+           
             if (Check_ip() && Check_port()) // !!!! OR IP AND PORT IS GOOD
             {
                 this.run = new RunGame();
-                run.Set_IP_Port(ip.Text, port.Text);
-                this.NavigationService.Navigate(run);
+
+                try
+                {
+                    run.Set_IP_Port(ip.Text, port.Text);
+                    this.NavigationService.Navigate(run);
+                }
+                catch
+                {
+                    mistake.Text = "Connection failed";
+                }
             } else
             {
                 mistake.Text = "  wrong IP or port";
