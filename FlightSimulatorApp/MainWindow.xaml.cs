@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+#pragma warning disable CS0234 // The type or namespace name 'view' does not exist in the namespace 'FlightSimulatorApp' (are you missing an assembly reference?)
 using FlightSimulatorApp.view;
+#pragma warning restore CS0234 // The type or namespace name 'view' does not exist in the namespace 'FlightSimulatorApp' (are you missing an assembly reference?)
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
