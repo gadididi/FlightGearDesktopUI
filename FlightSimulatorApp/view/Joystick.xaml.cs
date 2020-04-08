@@ -26,12 +26,14 @@ namespace FlightSimulatorApp.view
         private double recSize;
         private static SimulatorFlightViewModel vm;
         private bool first_time = true;
+        private Storyboard sb;
 
         //CTOR
         public Joystick()
         {
             InitializeComponent();
             recSize = 100;
+            this.sb = Knob.FindResource("CenterKnob") as Storyboard;
         }
 
         //Set the view model for this view (Joystick)
@@ -91,7 +93,9 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(myRectangle.Left - offSetX, YPos - offSetY);
+                        //Knob.RenderTransform = new TranslateTransform(myRectangle.Left - offSetX, YPos - offSetY);
+                        knobPosition.X = myRectangle.Left - offSetX;
+                        knobPosition.Y = YPos - offSetY;
                         Movement_Translation(myRectangle.Left, YPos);
                     }
                 }
@@ -99,7 +103,9 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(myRectangle.Right - offSetX, YPos - offSetY);
+                        //Knob.RenderTransform = new TranslateTransform(myRectangle.Right - offSetX, YPos - offSetY);
+                        knobPosition.X = myRectangle.Right - offSetX;
+                        knobPosition.Y = YPos - offSetY;
                         Movement_Translation(myRectangle.Right, YPos);
                     }
                 }
@@ -107,7 +113,9 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Right > XPos && myRectangle.Left < XPos) //mouse is outside the boarder from the top
                     {
-                        Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Top - offSetY);
+                        //Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Top - offSetY);
+                        knobPosition.X = XPos - offSetX;
+                        knobPosition.Y = myRectangle.Top - offSetY;
                         Movement_Translation(XPos, myRectangle.Top);
                     }
                 }
@@ -115,13 +123,17 @@ namespace FlightSimulatorApp.view
                 {
                     if (myRectangle.Right > XPos && myRectangle.Left < XPos)
                     {
-                        Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Bottom - offSetY);
+                        //Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Bottom - offSetY);
+                        knobPosition.X = XPos - offSetX;
+                        knobPosition.Y = myRectangle.Bottom - offSetY;
                         Movement_Translation(XPos, myRectangle.Bottom);
                     }
                 }
                 else if (myRectangle.Contains(new Point(XPos, YPos))) //mouse is inside the boarder
                 {
-                    Knob.RenderTransform = new TranslateTransform(XPos - offSetX, YPos - offSetY);
+                    //Knob.RenderTransform = new TranslateTransform(XPos - offSetX, YPos - offSetY);
+                    knobPosition.X = XPos - offSetX;
+                    knobPosition.Y = YPos - offSetY;
                     Movement_Translation(XPos, YPos);
                 }
             }
@@ -132,7 +144,8 @@ namespace FlightSimulatorApp.view
         {
             // release this control.
             this.ReleaseMouseCapture();
-            Knob.RenderTransform = new TranslateTransform();
+            this.sb.Begin();
+            //Knob.RenderTransform = new TranslateTransform();
         }
 
         //translate the X,Y position into values from the unit rectangle
@@ -151,6 +164,13 @@ namespace FlightSimulatorApp.view
                 Debug.WriteLine(e.Message);
             }
 
+        }
+
+        private void centerKnob_Completed(object sender, EventArgs e)
+        {
+            sb.Stop();
+            knobPosition.X = 0;
+            knobPosition.Y = 0;
         }
     }
 }
