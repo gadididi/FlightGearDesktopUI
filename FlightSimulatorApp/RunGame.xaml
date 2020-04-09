@@ -78,7 +78,7 @@
         </StackPanel>
 
         <Rectangle  Margin="54,524,344,52" Fill="#FFFFC5C5"/>
-        <TextBlock x:Name="errlog" Text="{Binding VM_Errlog, Mode=OneWay, NotifyOnTargetUpdated=True}" Margin="54,524,344,52" TargetUpdated="errlog_TargetUpdated"/>
+        <TextBlock x:Name="errlog" Text="{Binding VM_Errlog, Mode=OneWay, NotifyOnTargetUpdated=True}" Margin="54,524,344,52" TargetUpdated="errlog_TargetUpdated" FontWeight="Bold"/>
 
         <Grid.Background>
             <ImageBrush ImageSource="background.jpg"/>
