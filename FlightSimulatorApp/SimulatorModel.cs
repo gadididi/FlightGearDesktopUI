@@ -19,11 +19,13 @@ public class SimulatorModel : ISimulatorModel
     private NetworkStream stream;
     private List<Byte[]> To_send = new List<Byte[]>();
     private readonly object balanceLock = new object();
+    private bool to_add;
 
     //CTOR 
     public SimulatorModel(TcpClient T)
     {
         this.stop = false;
+        this.to_add = true;
         this.getter_client = T;
         this.location = new Location(0, 0);
         //Sets the error log to default value
@@ -210,7 +212,10 @@ public class SimulatorModel : ISimulatorModel
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         lock (balanceLock)
         {
-            this.To_send.Add(bytes);
+            if (this.to_add)
+            {
+                this.To_send.Add(bytes);
+            }
         }
     }
 
@@ -240,7 +245,11 @@ public class SimulatorModel : ISimulatorModel
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         lock (balanceLock)
         {
-            this.To_send.Add(bytes);
+            if (this.to_add)
+            {
+                this.To_send.Add(bytes);
+            }
+
         }
     }
 
@@ -270,7 +279,11 @@ public class SimulatorModel : ISimulatorModel
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
         lock (balanceLock)
         {
-            this.To_send.Add(bytes);
+            if (this.to_add)
+            {
+                this.To_send.Add(bytes);
+
+            }
         }
 
         //checking the range value and change it according to y_elevator range
@@ -293,7 +306,10 @@ public class SimulatorModel : ISimulatorModel
         Byte[]  bytes2 = System.Text.Encoding.ASCII.GetBytes(msg);
         lock (balanceLock)
         {
-            this.To_send.Add(bytes2);
+            if (this.to_add)
+            {
+                this.To_send.Add(bytes2);
+            }
         }
     }
 
@@ -338,28 +354,6 @@ public class SimulatorModel : ISimulatorModel
             String responseData = String.Empty;
             while (!this.stop)
             {
-                //lock this becouse we touch the list to send in 2 places
-                lock (balanceLock)
-                {
-                    try
-                    {
-                        if (this.To_send.Count != 0)
-                        {
-                            int j = 0;
-                            do
-                            {
-
-                                stream.Write(To_send[j], 0, To_send[j].Length);
-                                Int32 bytes32 = stream.Read(To_send[j], 0, To_send[j].Length);
-                                To_send.Remove(To_send[j]);
-
-                            } while (this.To_send.Count != 0);
-                        }
-                    } catch
-                    {
-                        Errlog = "No connection";
-                    }
-                }
 
                 int i = 0;
                 Int32 bytes;
@@ -369,9 +363,9 @@ public class SimulatorModel : ISimulatorModel
                 {
                     try
                     {
-                        Errlog = "Status: Connected";
                         stream.Write(list_data[i], 0, list_data[i++].Length);
                         bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        Errlog = "Status: Connected";
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
                         Heading_Degree = Double.Parse(value);
@@ -527,7 +521,37 @@ public class SimulatorModel : ISimulatorModel
                 catch (IOException)
                 {
                     Errlog = "Conection Timeout";
-                    Thread.Sleep(1000);
+                    this.To_send.Clear();
+                    //Thread.Sleep(1000);
+                }
+                //lock this becouse we touch the list to send in 2 places
+                lock (balanceLock)
+                {
+                    try
+                    {
+                        if (this.To_send.Count != 0)
+                        {
+                            int j = 0;
+                            do
+                            {
+
+                                stream.Write(To_send[j], 0, To_send[j].Length);
+                                Int32 bytes32 = stream.Read(To_send[j], 0, To_send[j].Length);
+                                To_send.Remove(To_send[j]);
+
+                            } while (this.To_send.Count != 0);
+                        }
+                    }
+                    // catch if passed 10 sec and the server did not return answer 'update the errLog 
+                    catch (IOException)
+                    {
+                        Errlog = "Conection Timeout";
+                        this.To_send.Clear();
+                    }
+                    catch
+                    {
+                        Errlog = "No connection";
+                    }
                 }
                 i = 0;
                 Thread.Sleep(250); // read the data in 4Hz
