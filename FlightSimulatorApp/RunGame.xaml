@@ -62,9 +62,9 @@
             <Label Content="{Binding VM_Pitch_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
             <Label Content="{Binding VM_Altimeter_FT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
-        
+
         <StackPanel HorizontalAlignment="Left" Height="74" Margin="360,15,0,0" VerticalAlignment="Top" Width="268" >
-            <Label Content="{Binding VM_Long_lat}" ContentStringFormat="0.00" Height="37" Width="248"  Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <Label Content="{Binding VM_Long_lat}" ContentStringFormat="0.00" Height="66" Width="248"  Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="10,0"/>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left" Height="74" Margin="155,16,0,0" VerticalAlignment="Top" Width="200" >
             <Label Content="Latitude, Longitude:" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
