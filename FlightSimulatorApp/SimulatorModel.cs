@@ -511,7 +511,7 @@ public class SimulatorModel : ISimulatorModel
                     }
                     else
                     {
-                        Long_lat = Latitude_deg.ToString().Substring(0, 6) + ", " + Longitude_deg.ToString().Substring(0, 6);
+                        Long_lat = Latitude_deg + "\n" + Longitude_deg;
                     }
                     responseData = String.Empty;
 
