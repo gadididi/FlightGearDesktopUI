@@ -518,11 +518,19 @@ public class SimulatorModel : ISimulatorModel
                     Location = new Location(Latitude_deg, Longitude_deg);
                 }
                 // catch if passed 10 sec and the server did not return answer 'update the errLog 
-                catch (IOException)
+                catch (IOException e)
                 {
-                    Errlog = "Conection Timeout";
-                    this.To_send.Clear();
-                    //Thread.Sleep(1000);
+                    Debug.WriteLine(e);
+                    if (e.ToString().Contains("connected party did not properly respond after a period of time"))
+                    {
+                        Errlog = "Conection Timeout";
+                        this.To_send.Clear();
+                    } else
+                    {
+                        Errlog = "The connection was forcibly closed by the remote host, please go back to the main menu and try again";
+                        this.To_send.Clear();
+                    }
+
                 }
                 //lock this becouse we touch the list to send in 2 places
                 lock (balanceLock)
