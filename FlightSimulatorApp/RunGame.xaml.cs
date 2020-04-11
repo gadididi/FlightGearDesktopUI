@@ -42,7 +42,11 @@ namespace FlightSimulatorApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.vm.Disconnect();
-            this.NavigationService.GoBack();
+            if (NavigationService.CanGoBack)
+            {
+                this.NavigationService.GoBack();
+                errlog.Text = "";
+            }
         }
 
         //Sets the IP and port for connection
@@ -76,6 +80,18 @@ namespace FlightSimulatorApp
             {
                 this.vm.Disconnect();
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
+
+                if (NavigationService.CanGoBack)
+                {
+                    this.NavigationService.GoBack();
+                }
+
+                return;
+            }
+            else if (errlog.Text == "The connection was forcibly closed by the remote host, please go back to the main menu and try again")
+            {
+                this.vm.Disconnect();
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 if (NavigationService.CanGoBack)
                 {

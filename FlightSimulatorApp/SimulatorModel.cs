@@ -352,6 +352,7 @@ public class SimulatorModel : ISimulatorModel
             Byte[] messageReceived = new byte[256];
             // String to store the response ASCII representation.
             String responseData = String.Empty;
+            bool sreverErr = false;
             while (!this.stop)
             {
 
@@ -361,11 +362,16 @@ public class SimulatorModel : ISimulatorModel
                 // every property we write the protocol to the server ,read the answer ,encoding ,parse it and update.
                 try
                 {
+                    if (sreverErr)
+                    {
+                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        Errlog = "Status: Connected";
+                        sreverErr = false;
+                    }
                     try
                     {
                         stream.Write(list_data[i], 0, list_data[i++].Length);
                         bytes = stream.Read(messageReceived, 0, messageReceived.Length);
-                        Errlog = "Status: Connected";
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
                         Heading_Degree = Double.Parse(value);
@@ -524,13 +530,14 @@ public class SimulatorModel : ISimulatorModel
                     if (e.ToString().Contains("connected party did not properly respond after a period of time"))
                     {
                         Errlog = "Conection Timeout";
-                        this.To_send.Clear();
+                        sreverErr = true;
                     } else
                     {
                         Errlog = "The connection was forcibly closed by the remote host, please go back to the main menu and try again";
-                        this.To_send.Clear();
+                        Thread.Sleep(250);
+                        Thread.CurrentThread.Abort();
                     }
-
+                    this.To_send.Clear();
                 }
                 //lock this becouse we touch the list to send in 2 places
                 lock (balanceLock)
@@ -551,9 +558,19 @@ public class SimulatorModel : ISimulatorModel
                         }
                     }
                     // catch if passed 10 sec and the server did not return answer 'update the errLog 
-                    catch (IOException)
+                    catch (IOException e)
                     {
-                        Errlog = "Conection Timeout";
+                        Debug.WriteLine(e);
+                        if (e.ToString().Contains("connected party did not properly respond after a period of time"))
+                        {
+                            Errlog = "Conection Timeout";
+                        }
+                        else
+                        {
+                            Errlog = "The connection was forcibly closed by the remote host, please go back to the main menu and try again";
+                            Thread.Sleep(250);
+                            Thread.CurrentThread.Abort();
+                        }
                         this.To_send.Clear();
                     }
                     catch
