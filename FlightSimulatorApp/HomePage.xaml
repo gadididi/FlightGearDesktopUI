@@ -15,11 +15,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Frame x:Name="Main" NavigationUIVisibility="Hidden"/>
-            <TextBlock Text="Flight Simulator" FontSize="100" HorizontalAlignment="Center" FontWeight="UltraBlack" FontStyle="Italic" TextTrimming="None" Foreground="Red">
-                <TextBlock.TextDecorations>
-                    <TextDecoration/>
-                </TextBlock.TextDecorations>
-            </TextBlock>
+            <TextBlock Text="Flight Simulator" FontSize="100" HorizontalAlignment="Center" FontWeight="UltraBlack" FontStyle="Italic" TextTrimming="None" Foreground="Red" TextDecorations="{x:Null}"/>
             <TextBlock Text="Log In" FontSize="50" Margin="0,206,0,44" HorizontalAlignment="Center" FontWeight="Heavy" Foreground="#FFDF0A0A"/>
             <TextBox x:Name="ip" Height="20" Width="100"  HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Margin="450,318,450,262"  Text="Enter IP" GotFocus="ip_GotFocus" LostFocus="ip_LostFocus"/>
             <TextBox x:Name="port" Height="20" Width="100" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" Margin="450,343,450,237" Text="Enter port" GotFocus="port_GotFocus" LostFocus="port_LostFocus"/>
@@ -27,6 +23,8 @@
             <Button Content="Let's Fly!" FontSize="40" HorizontalAlignment="Center" Margin="0,442,0,0" VerticalAlignment="Top" Width="184" Height="73" FontWeight="UltraBlack" Click="Button_Click_Fly"/>
             <Button x:Name="exit1" Content="EXIT" HorizontalAlignment="Center" Height="26" Margin="0,536,0,0" VerticalAlignment="Top" Width="154" FontSize="16" FontStretch="Normal" Click="Button_Click_Exit"/>
             <TextBlock x:Name="mistake" HorizontalAlignment="Center" Height="19" Margin="0,286,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="100" Foreground="#FFF10505"/>
+            <TextBlock x:Name="second_chance" HorizontalAlignment="Center" Height="31" Margin="332,411,301,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="367" Foreground="#FFF10505" FontWeight="Bold"/>
+
             <Grid.Background>
                 <ImageBrush ImageSource="background.jpg"/>
             </Grid.Background>

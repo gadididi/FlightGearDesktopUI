@@ -22,11 +22,17 @@ namespace FlightSimulatorApp
     {
         //run is the next page
         RunGame run;
+        private static bool first_time = true;
 
         //CTOR
         public HomePage()
         {
             InitializeComponent();
+            if (!first_time && !RunGame.to_main)
+            {
+                second_chance.Text = "         The connection was forcibly closed by the remote host";
+            }
+            first_time = false;
         }
 
         //exit click ,exit the game
@@ -50,10 +56,12 @@ namespace FlightSimulatorApp
                 }
                 catch
                 {
+                    second_chance.Text = "";
                     mistake.Text = "Connection failed";
                 }
             } else
             {
+                second_chance.Text = "";
                 mistake.Text = "  wrong IP or port";
             }
         }
