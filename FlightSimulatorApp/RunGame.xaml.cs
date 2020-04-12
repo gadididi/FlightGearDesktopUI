@@ -22,6 +22,7 @@ namespace FlightSimulatorApp
     {
         //ViewModel
         SimulatorFlightViewModel vm;
+        public static bool to_main;
         //Intiallize the RunGame component
         public RunGame()
         {
@@ -30,6 +31,7 @@ namespace FlightSimulatorApp
             //Set ViewModel and Model
             TcpClient tcpClient = new TcpClient();
             this.vm = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
+            to_main = false;
 
             //Set Joystick
             joystick1 = new Joystick();
@@ -45,6 +47,7 @@ namespace FlightSimulatorApp
             if (NavigationService.CanGoBack)
             {
                 this.NavigationService.GoBack();
+                to_main = true;
                 errlog.Text = "";
             }
         }
@@ -91,13 +94,12 @@ namespace FlightSimulatorApp
             else if (errlog.Text == "The connection was forcibly closed by the remote host, please go back to the main menu and try again")
             {
                 this.vm.Disconnect();
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
 
                 if (NavigationService.CanGoBack)
                 {
+                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
                     this.NavigationService.GoBack();
                 }
-
                 return;
             }
         }
