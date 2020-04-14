@@ -1,84 +1,71 @@
 # FlightGearDesktopUI
 
-## Prerequisites
+A Desktop app which connects to FlightGear simulator and controls the aircrafts.
+GitHub repository link: [Here](https://github.com/ori294/FlightGearDesktopUI)
 
-1. [Install git](https://git-scm.com/download/) on your machine
-2. [Sign up](http://www.github.com) to github
+## General Description
 
-## Install
+This program controls an aircraft with in the "[_FlightGear_]" (https://www.flightgear.org/) flight simulator. 
+The program connects to the flight simulator both as client.
+The client will send the simulator instructions That allows us to control our flight vessel from the UI.
 
-1. Clone the project on your machine:
+## Collaborators
 
-    ```bash
-    git clone https://github.com/ori294/FlightGearDesktopUI.git
-    ```
+This program was developed by Gadi Didi and Ori Levy, CS students from Bar-Ilan university, Israel.
 
-2. Check the status of your project - you may be asked to provide credentials.
 
-    ```bash
-    git status
-    ```
+## General Description
 
-## Develop
+##### User Interface
+- The program open at the log in page and ask from the user to enter an IP and Port.
+- once the user clicking on "Fly" the model will start a connection eith the simulator for recieve and send information.
+- The simulator page will be open and the user will be able to watch the movment of the plain, the dashboard and to be able to move the joistick,
+sliders provided to the user.
 
-1. Start with pulling the most recent updates to your local project. Do it everytime someone says he upload new changes:
+FlightSimulatorApp has been programed by the mvvm design.
+The viewModels and the model are initialized at the startup of the program at App.xaml
+and are independence.
+#### The view:
+The view is a observer and get information from 3 independence view model that we will describe later.
+In addition, the view is also listen to updates of the "Navigator" control and update the relevant view Model about the changes that have been made.
 
-    ```bash
-    git pull origin master
-    ```
+#### The view Models:
+There are three view models, each one is responsible to different matter.
+- Errors_VM - is responsible to update the view about errors occur at the model sector.
+- get_VM - is responsible to update the view about information we received from the simulator server related to the Dashboard.
+- set_VM - is responsible to update the model about information that have been change in the view by actions of the user.
 
-2. Git works with a main branch called `master` and many sub branches which you can open. So, before you start making changes - create a local branch on your machine:
+#### The Model:
+The model is responsible to make a connection with the simulator server and get information about the Dashboard and update him if its necessary about
+actions of the user.
 
-    ```bash
-    git checkout -b <branch_name>
-    ```
+## Collaborators
 
-3. Check you are in working on your current branch and **not on `master`**. This command should print on which branch are you working in (make sure it is the *branch_name* you set). This command will also display which changes you've set.
+This program was developed by [Eliadsellem](https://github.com/Eliadsellem) and [shirgoldberger](https://github.com/shirgoldberger), CS students from Bar-Ilan university, Israel.
 
-    ```bash
-    git status
-    ```
 
-4. When you feel ready, commit your changes to your local branch run:
+## Features
+#### Exit button:
+The "exit" button is shown for all the time the program is running and give an option to the user finish with the program.
 
-    ```bash
-    git checkout . ; git commit -m "add a short description for what you've done"
-    ```
+#### Back button:
+The "back" button is shown after we successively made a log in and give the possibility to go back to the log in page and reconnect.
 
-5. Now that you finished commiting your changes on your **local** branch, upload your branch with the changes to github.
+#### Map:
+The Map has many features:
+- first of all we have a focus button that allowing to focus at our plain and move the map so the plain will be at the center of it.
 
-    ```bash
-    git push origin <branch_name>
-    ```
+- when the plain is exceed the map from any direction, the map make an update so that the plain will still be shown and the plain will be shown like its continues from the other side.
+for example: 
+if the plain is exceed the map from above with a positive Slope, if its exceeding from the right/left side so it'll look like the plain continues flight from the left side of the bottom.
+but if it was exceeding from above with negative Slope, if its exceeding from the right/left side so it'll look like the plain continues flight from the right side of the bottom.
 
-6. Open new pull request
-   1. Go to the project's [_branches_](https://github.com/ori294/FlightGearDesktopUI/branches) tab on github, and click **_New pull request_**
-   2. Next click **_Creat pull request_**
-   3. Now, if you feel ready to add your changes to the project, and if everything can be merged (none of us tried to change the same file at the same time) click **_Merge pull request_**
+- you have the possibility to play with the map and move it and focus, and if the plain is still on the map the functionality above will still work,
+else it makes you at a free zone and you can continue playing until you will re-find the plain or click on the focus button.
 
-7. That's it! Now all you need to do is branch back to `master` and pull your edits and changes. Run these two commands one after another:
+#### Connection Status Window:
+There is a window that display to the user about the connection status.
 
-    ```bash
-    git checkout master
-    git pull origin master
-    ```
+#### Errors:
 
-* In some cases you will not be able to merge your changes - please refer to the next section: **Merging other people's changes**
-
-You are now ready to start your new branch and run through all again (from 1 to 7).
-
-### Merging other people's changes
-
-It is possible some of us are working on the same files. If one pushed changes to `master`, after we started working on the files (in a seperate branch) - **github** will tell us we need to merge changes.
-
-Merging changes is done as follows:
-
-1. First, add any changes you have:
-
-    ```bash
-    git checkout . ; git commit -m "add a short description for what you've done"
-    ```
-
-2. Next, pull latest changes from master: `git pull origin master`
-3. Rebase your local branch with `master`: `git rebase master`
-4. That's it, now all we need to do is push our branch again to github. Github will detect it can merge our branch: `git push origin <branch_name>`
+Errors massages are displays on the UI if there is a connection problem with the simulator, invalid inputs given from the simulator, 10 sec timeout for reading a massage, or any other exception problems.
