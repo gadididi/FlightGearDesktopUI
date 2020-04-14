@@ -39,33 +39,17 @@ There are three view models, each one is responsible to different matter.
 The model is responsible to make a connection with the simulator server and get information about the Dashboard and update him if its necessary about
 actions of the user.
 
-## Collaborators
-
-This program was developed by [Eliadsellem](https://github.com/Eliadsellem) and [shirgoldberger](https://github.com/shirgoldberger), CS students from Bar-Ilan university, Israel.
-
-
 ## Features
-#### Exit button:
-The "exit" button is shown for all the time the program is running and give an option to the user finish with the program.
-
-#### Back button:
-The "back" button is shown after we successively made a log in and give the possibility to go back to the log in page and reconnect.
-
 #### Map:
-The Map has many features:
-- first of all we have a focus button that allowing to focus at our plain and move the map so the plain will be at the center of it.
+Using Bing Maps SDK, the map shows the current location of the flight vessel. You can travel around the world and explore the map as you please. In order to certerilize the map around the flight vessel, just click on the "Center me" button.
 
-- when the plain is exceed the map from any direction, the map make an update so that the plain will still be shown and the plain will be shown like its continues from the other side.
-for example: 
-if the plain is exceed the map from above with a positive Slope, if its exceeding from the right/left side so it'll look like the plain continues flight from the left side of the bottom.
-but if it was exceeding from above with negative Slope, if its exceeding from the right/left side so it'll look like the plain continues flight from the right side of the bottom.
+#### Controller:
+Using a joystick and two sliders, you can control the flight vessel. The joystick controls the Rudder and Elevator while the sliders control the Throttle and Aileron.
 
-- you have the possibility to play with the map and move it and focus, and if the plain is still on the map the functionality above will still work,
-else it makes you at a free zone and you can continue playing until you will re-find the plain or click on the focus button.
+#### Real-Time flight data:
+During the flight, you'll recieve real-time flight data, such as Longtitude, Latitude, Air Speed, Pitch, Roll, Heading and more.
 
-#### Connection Status Window:
-There is a window that display to the user about the connection status.
+#### Connection Status and error log indicator:
+Just under the map, there's an indicator which shows the connection status and whether an error had occured or not.
 
-#### Errors:
 
-Errors massages are displays on the UI if there is a connection problem with the simulator, invalid inputs given from the simulator, 10 sec timeout for reading a massage, or any other exception problems.
