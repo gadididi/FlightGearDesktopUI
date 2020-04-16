@@ -10,14 +10,14 @@ namespace FlightSimulatorApp
     public class SimulatorFlightViewModel : INotifyPropertyChanged
     {
         //The model
-        private ISimulatorModel model;
+        private readonly ISimulatorModel Model;
 
         //Latitude and Longitude
-        public string VM_Long_lat
+        public string VM_LongtitudeLatitude
         {
             get
             {
-                return model.Long_lat;
+                return Model.LongtitudeLatitude;
             }
         }
 
@@ -26,7 +26,7 @@ namespace FlightSimulatorApp
         {
             get
             {
-                return model.Errlog;
+                return Model.Errlog;
             }
         }
 
@@ -34,103 +34,103 @@ namespace FlightSimulatorApp
         public Location VM_Location
         {
             get {
-                return model.Location; }
+                return Model.Location; }
         }
 
         //Heading by degree
-        public double VM_Heading_Degree
+        public double VM_HeadingDegree
         {
-            get { return model.Heading_Degree; }
+            get { return Model.HeadingDegree; }
         }
 
         //Vertical speed by KT units
-        public double VM_Vertical_Speed
+        public double VM_VerticalSpeed
         {
-            get { return model.Vertical_Speed; }
+            get { return Model.VerticalSpeed; }
         }
 
         //Ground speed by KT units
-        public double VM_Ground_Speed
+        public double VM_GroundSpeed
         {
-            get { return model.Ground_Speed; }
+            get { return Model.GroundSpeed; }
         }
 
         //Air speed by KT units
-        public double VM_Air_Speed
+        public double VM_AirSpeed
         {
-            get { return model.Air_Speed; }
+            get { return Model.AirSpeed; }
         }
 
         //Altitude by FT units
-        public double VM_Altitude_FT
+        public double VM_AltitudeFT
         {
-            get { return model.Altitude_FT; }
+            get { return Model.AltitudeFT; }
         }
         
         //Roll by degree
-        public double VM_Roll_Degree
+        public double VM_RollDegree
         {
-            get { return model.Roll_Degree; }
+            get { return Model.RollDegree; }
         }
 
         //Pitch by degree
-        public double VM_Pitch_Degree
+        public double VM_PitchDegree
         {
-            get { return model.Pitch_Degree; }
+            get { return Model.PitchDegree; }
         }
         //Altimeter by FT units
-        public double VM_Altimeter_FT
+        public double VM_AltimeterFT
         {
-            get { return model.Altimeter_FT; }
+            get { return Model.AltimeterFT; }
         }
 
         //Longtitude by degree
-        public double VM_Longitude_deg
+        public double VM_LongitudeDegree
         {
-            get { return model.Longitude_deg; }
+            get { return Model.LongitudeDegree; }
         }
 
         //Latitude by degree
-        public double VM_Latitude_deg
+        public double VM_LatitudeDegree
         {
-            get { return model.Latitude_deg; }
+            get { return Model.LatitudeDegree; }
         }
 
-        private double throttle;
+        private double Throttle;
         //Throttle in the interval [0,1]
         public double VM_Throttle
         {
-            get { return throttle; }
+            get { return Throttle; }
             set
             {
-                throttle = value;
-                model.setThrottle(throttle);
+                Throttle = value;
+                Model.SetThrottle(Throttle);
             }
         }
 
-        private double aileron;
+        private double Aileron;
         //Aileron in the interval [-1,1]
         public double VM_Aileron
         {
-            get { return aileron; }
+            get { return Aileron; }
             set
             {
-                aileron = value;
-                model.setAileron(aileron);
+                Aileron = value;
+                Model.SetAileron(Aileron);
             }
         }
 
         //Gets the values for the rudder and elevator and send to the model.
-        public void setDirection(double x_rudder, double y_elevator)
+        public void SetDirection(double XRudder, double YElevator)
         {
-            model.setDirection(x_rudder, y_elevator);
+            Model.SetDirection(XRudder, YElevator);
         }
 
         //ViewModel CTOR
         public SimulatorFlightViewModel(ISimulatorModel m)
         {
-            this.model = m;
-            model.PropertyChanged +=
+            this.Model = m;
+            Model.PropertyChanged +=
             delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged("VM_" + e.PropertyName);
@@ -146,15 +146,15 @@ namespace FlightSimulatorApp
         }
 
         //Send the IP and port to the model
-        public void set_ip_and_port(string ip, int port)
+        public void SetIPAndPort(string ip, int port)
         {
-            this.model.Connect(ip, port);
+            this.Model.Connect(ip, port);
         }
 
         //Disconnect from the server.
         public void Disconnect()
         {
-            this.model.Disconnect();
+            this.Model.Disconnect();
         }
     }
 }

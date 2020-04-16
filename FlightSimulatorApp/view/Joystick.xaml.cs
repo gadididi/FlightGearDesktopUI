@@ -19,27 +19,26 @@ namespace FlightSimulatorApp.view
     /// Interaction logic for Joystick.xaml
     public partial class Joystick : UserControl
     {
-        private Point _positionInBlock;
-        private double offSetX;
-        private double offSetY;
-        private Rect myRectangle;
-        private double recSize;
-        private static SimulatorFlightViewModel vm;
-        private bool first_time = true;
-        private Storyboard sb;
+        private double OffSetX;
+        private double OffSetY;
+        private Rect MyRectangle;
+        private readonly double RectangleSize;
+        private static SimulatorFlightViewModel ViewModel;
+        private bool FirstTime = true;
+        private readonly Storyboard Story;
 
         //CTOR
         public Joystick()
         {
             InitializeComponent();
-            recSize = 100;
-            this.sb = Knob.FindResource("CenterKnob") as Storyboard;
+            RectangleSize = 100;
+            this.Story = Knob.FindResource("CenterKnob") as Storyboard;
         }
 
         //Set the view model for this view (Joystick)
-        public void Set_ViewModel(SimulatorFlightViewModel view)
+        public void SetViewModel(SimulatorFlightViewModel view)
         {
-            vm = view;
+            ViewModel = view;
         }
 
 
@@ -47,24 +46,21 @@ namespace FlightSimulatorApp.view
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // when the mouse is down, get the position within the current control. (so the control top/left doesn't move to the mouse position)
-            if (first_time)
+            if (FirstTime)
             {
-                first_time = false;
+                FirstTime = false;
 
                 //Get Absolute position of the knob
-                Point position = this.knobBoarder.PointToScreen(new Point(0d, 0d)),
-                controlPosition = this.PointToScreen(new Point(0d, 0d));
+                Point position = this.knobBoarder.PointToScreen(new Point(0d, 0d));
 
                 //Set offset to help translate relative position in the knob to the absolute position.
-                offSetX = position.X;
-                offSetY = position.Y;
-
-                _positionInBlock = new Point(offSetX, offSetY);
+                OffSetX = position.X;
+                OffSetY = position.Y;
 
                 //Create a rectangle to be the boarder of the knob
-                myRectangle = new Rect();
-                myRectangle.Location = new Point(position.X - 50, position.Y - 50);
-                myRectangle.Size = new Size(recSize, recSize);
+                MyRectangle = new Rect();
+                MyRectangle.Location = new Point(position.X - 50, position.Y - 50);
+                MyRectangle.Size = new Size(RectangleSize, RectangleSize);
             }
 
             // capture the mouse (so the mouse move events are still triggered (even when the mouse is not above the control)
@@ -84,57 +80,57 @@ namespace FlightSimulatorApp.view
                 var mousePosition = e.GetPosition(container);
 
                 //Translate the relative position of the mouse into an absolute one.
-                double XPos = mousePosition.X + myRectangle.Left - this.knobBoarder.ActualWidth / 4;
-                double YPos = mousePosition.Y + myRectangle.Top - this.knobBoarder.ActualHeight / 4;
+                double XPos = mousePosition.X + MyRectangle.Left - this.knobBoarder.ActualWidth / 4;
+                double YPos = mousePosition.Y + MyRectangle.Top - this.knobBoarder.ActualHeight / 4;
 
 
                 // move the usercontrol.
-                if (myRectangle.Left > XPos) //mouse is outside the boarder from the left
+                if (MyRectangle.Left > XPos) //mouse is outside the boarder from the left
                 {
-                    if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
+                    if (MyRectangle.Top < YPos && MyRectangle.Bottom > YPos)
                     {
-                        //Knob.RenderTransform = new TranslateTransform(myRectangle.Left - offSetX, YPos - offSetY);
-                        knobPosition.X = myRectangle.Left - offSetX;
-                        knobPosition.Y = YPos - offSetY;
-                        Movement_Translation(myRectangle.Left, YPos);
+                        //Knob.RenderTransform = new TranslateTransform(MyRectangle.Left - OffSetX, YPos - OffSetY);
+                        knobPosition.X = MyRectangle.Left - OffSetX;
+                        knobPosition.Y = YPos - OffSetY;
+                        MovementTranslation(MyRectangle.Left, YPos);
                     }
                 }
-                else if (myRectangle.Right < XPos) //mouse is outside the boarder from the right
+                else if (MyRectangle.Right < XPos) //mouse is outside the boarder from the right
                 {
-                    if (myRectangle.Top < YPos && myRectangle.Bottom > YPos)
+                    if (MyRectangle.Top < YPos && MyRectangle.Bottom > YPos)
                     {
-                        //Knob.RenderTransform = new TranslateTransform(myRectangle.Right - offSetX, YPos - offSetY);
-                        knobPosition.X = myRectangle.Right - offSetX;
-                        knobPosition.Y = YPos - offSetY;
-                        Movement_Translation(myRectangle.Right, YPos);
+                        //Knob.RenderTransform = new TranslateTransform(MyRectangle.Right - OffSetX, YPos - OffSetY);
+                        knobPosition.X = MyRectangle.Right - OffSetX;
+                        knobPosition.Y = YPos - OffSetY;
+                        MovementTranslation(MyRectangle.Right, YPos);
                     }
                 }
-                else if (myRectangle.Top > YPos)
+                else if (MyRectangle.Top > YPos)
                 {
-                    if (myRectangle.Right > XPos && myRectangle.Left < XPos) //mouse is outside the boarder from the top
+                    if (MyRectangle.Right > XPos && MyRectangle.Left < XPos) //mouse is outside the boarder from the top
                     {
-                        //Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Top - offSetY);
-                        knobPosition.X = XPos - offSetX;
-                        knobPosition.Y = myRectangle.Top - offSetY;
-                        Movement_Translation(XPos, myRectangle.Top);
+                        //Knob.RenderTransform = new TranslateTransform(XPos - OffSetX, MyRectangle.Top - OffSetY);
+                        knobPosition.X = XPos - OffSetX;
+                        knobPosition.Y = MyRectangle.Top - OffSetY;
+                        MovementTranslation(XPos, MyRectangle.Top);
                     }
                 }
-                else if (myRectangle.Bottom < YPos) //mouse is outside the boarder from the bottom
+                else if (MyRectangle.Bottom < YPos) //mouse is outside the boarder from the bottom
                 {
-                    if (myRectangle.Right > XPos && myRectangle.Left < XPos)
+                    if (MyRectangle.Right > XPos && MyRectangle.Left < XPos)
                     {
-                        //Knob.RenderTransform = new TranslateTransform(XPos - offSetX, myRectangle.Bottom - offSetY);
-                        knobPosition.X = XPos - offSetX;
-                        knobPosition.Y = myRectangle.Bottom - offSetY;
-                        Movement_Translation(XPos, myRectangle.Bottom);
+                        //Knob.RenderTransform = new TranslateTransform(XPos - OffSetX, MyRectangle.Bottom - OffSetY);
+                        knobPosition.X = XPos - OffSetX;
+                        knobPosition.Y = MyRectangle.Bottom - OffSetY;
+                        MovementTranslation(XPos, MyRectangle.Bottom);
                     }
                 }
-                else if (myRectangle.Contains(new Point(XPos, YPos))) //mouse is inside the boarder
+                else if (MyRectangle.Contains(new Point(XPos, YPos))) //mouse is inside the boarder
                 {
-                    //Knob.RenderTransform = new TranslateTransform(XPos - offSetX, YPos - offSetY);
-                    knobPosition.X = XPos - offSetX;
-                    knobPosition.Y = YPos - offSetY;
-                    Movement_Translation(XPos, YPos);
+                    //Knob.RenderTransform = new TranslateTransform(XPos - OffSetX, YPos - OffSetY);
+                    knobPosition.X = XPos - OffSetX;
+                    knobPosition.Y = YPos - OffSetY;
+                    MovementTranslation(XPos, YPos);
                 }
             }
         }
@@ -144,20 +140,20 @@ namespace FlightSimulatorApp.view
         {
             // release this control.
             this.ReleaseMouseCapture();
-            this.sb.Begin();
+            this.Story.Begin();
             //Knob.RenderTransform = new TranslateTransform();
         }
 
         //translate the X,Y position into values from the unit rectangle
-        private void Movement_Translation(double x, double y)
+        private void MovementTranslation(double x, double y)
         {
-            double deltaX = (x - offSetX) / recSize * 2;
-            double deltaY = (y - offSetY) / recSize * -2;
+            double deltaX = (x - OffSetX) / RectangleSize * 2;
+            double deltaY = (y - OffSetY) / RectangleSize * -2;
             //Debug.WriteLine("deltaX,deltaY: " + deltaX + "," + deltaY);
 
             try
             {
-                vm.setDirection(deltaX, deltaY);
+                ViewModel.SetDirection(deltaX, deltaY);
             }
             catch (NullReferenceException e)
             {
@@ -168,7 +164,7 @@ namespace FlightSimulatorApp.view
 
         private void centerKnob_Completed(object sender, EventArgs e)
         {
-            sb.Stop();
+            Story.Stop();
             knobPosition.X = 0;
             knobPosition.Y = 0;
         }

@@ -11,51 +11,51 @@ using System.Threading;
 
 public class SimulatorModel : ISimulatorModel
 {
-    // stop for stop the thread in the staet method
+    // ShouldStop for ShouldStop the thread in the staet method
     // tcpclient for the comunication with the server
 
-    volatile Boolean stop;
-    private TcpClient getter_client;
-    private NetworkStream stream;
-    private List<Byte[]> To_send = new List<Byte[]>();
-    private readonly object balanceLock = new object();
-    private bool to_add;
+    volatile Boolean ShouldStop;
+    private TcpClient TCPClient;
+    private NetworkStream TCPStream;
+    private List<Byte[]> DataToSend = new List<Byte[]>();
+    private readonly object bBalanceLock = new object();
+    private bool ShouldAdd;
 
     //CTOR 
     public SimulatorModel(TcpClient T)
     {
-        this.stop = false;
-        this.to_add = true;
-        this.getter_client = T;
-        this.location = new Location(0, 0);
+        this.ShouldStop = false;
+        this.ShouldAdd = true;
+        this.TCPClient = T;
+        this.PropLocation = new Location(0, 0);
         //Sets the error log to default value
         this.Errlog = "Status: Connected";
         // Sets the receive time out using the ReceiveTimeout public property.
-        getter_client.ReceiveTimeout = 10000;
+        TCPClient.ReceiveTimeout = 10000;
 
         // Gets the receive time out using the ReceiveTimeout public property.
-        if (getter_client.ReceiveTimeout == 10000)
-            Debug.WriteLine("The receive time out limit was successfully set " + getter_client.ReceiveTimeout.ToString());
+        if (TCPClient.ReceiveTimeout == 10000)
+            Debug.WriteLine("The receive time out limit was successfully set " + TCPClient.ReceiveTimeout.ToString());
     }
 
     // event
     public event PropertyChangedEventHandler PropertyChanged;
 
     // 8 members for dashboard
-    private double heading_Degree;
-    private double vertical_Speed;
-    private double ground_Speed;
-    private double air_Speed;
-    private double altitude_FT;
-    private double roll_Degree;
-    private double pitch_Degree;
-    private double altimeter_FT;
+    private double PropHeadingDegree;
+    private double PropVerticalSpeed;
+    private double PropGroundSpeed;
+    private double PropAirSpeed;
+    private double PropAltitudeFT;
+    private double PropRollDegree;
+    private double PropPitchDegree;
+    private double PropAltimeterFT;
 
     //members for the map
-    private double longitude_deg;
-    private double latitude_deg;
-    private Location location;
-    private string long_lat;
+    private double PropLongitude;
+    private double PropLatitude;
+    private Location PropLocation;
+    private string PropLongAndLat;
 
     //member Error Log
     private string errlog;
@@ -63,13 +63,13 @@ public class SimulatorModel : ISimulatorModel
     //here 8 property for dashboard
     // more three for pin in map
     // Errlog property for sign kinds of err to the view by binding
-    public string Long_lat
+    public string LongtitudeLatitude
     {
-        get { return long_lat; }
+        get { return PropLongAndLat; }
         set
         {
-            long_lat = value;
-            NotifyPropertyChanged("Long_lat");
+            PropLongAndLat = value;
+            NotifyPropertyChanged("LongtitudeLatitude");
         }
     }
 
@@ -85,109 +85,109 @@ public class SimulatorModel : ISimulatorModel
 
     public Location Location
     {
-        get { return location; }
+        get { return PropLocation; }
         set
         {
-            location = value;
+            PropLocation = value;
             NotifyPropertyChanged("Location");
         }
     }
 
-    public double Longitude_deg
+    public double LongitudeDegree
     {
-        get { return longitude_deg; }
+        get { return PropLongitude; }
         set
         {
-            longitude_deg = value;
-            NotifyPropertyChanged("Longitude_deg");
+            PropLongitude = value;
+            NotifyPropertyChanged("LongitudeDegree");
         }
     }
 
-    public double Latitude_deg
+    public double LatitudeDegree
     {
-        get { return latitude_deg; }
+        get { return PropLatitude; }
         set
         {
-            latitude_deg = value;
-            NotifyPropertyChanged("Latitude_deg");
+            PropLatitude = value;
+            NotifyPropertyChanged("LatitudeDegree");
         }
     }
 
-    public double Heading_Degree
+    public double HeadingDegree
     {
-        get { return heading_Degree; }
+        get { return PropHeadingDegree; }
         set
         {
-            heading_Degree = value;
-            NotifyPropertyChanged("Heading_Degree");
+            PropHeadingDegree = value;
+            NotifyPropertyChanged("HeadingDegree");
         }
     }
-    public double Vertical_Speed
+    public double VerticalSpeed
     {
-        get { return vertical_Speed; }
+        get { return PropVerticalSpeed; }
         set
         {
-            vertical_Speed = value;
-            NotifyPropertyChanged("Vertical_Speed");
+            PropVerticalSpeed = value;
+            NotifyPropertyChanged("VerticalSpeed");
         }
     }
-    public double Ground_Speed
+    public double GroundSpeed
     {
-        get { return ground_Speed; }
+        get { return PropGroundSpeed; }
         set
         {
-            ground_Speed = value;
-            NotifyPropertyChanged("Ground_Speed");
+            PropGroundSpeed = value;
+            NotifyPropertyChanged("GroundSpeed");
         }
     }
-    public double Air_Speed
+    public double AirSpeed
     {
-        get { return air_Speed; }
+        get { return PropAirSpeed; }
         set
         {
-            air_Speed = value;
-            NotifyPropertyChanged("Air_Speed");
+            PropAirSpeed = value;
+            NotifyPropertyChanged("AirSpeed");
         }
     }
-    public double Altitude_FT
+    public double AltitudeFT
     {
-        get { return altitude_FT; }
+        get { return PropAltitudeFT; }
         set
         {
-            altitude_FT = value;
-            NotifyPropertyChanged("Altitude_FT");
+            PropAltitudeFT = value;
+            NotifyPropertyChanged("AltitudeFT");
         }
     }
-    public double Roll_Degree
+    public double RollDegree
     {
-        get { return roll_Degree; }
+        get { return PropRollDegree; }
         set
         {
-            roll_Degree = value;
-            NotifyPropertyChanged("Roll_Degree");
+            PropRollDegree = value;
+            NotifyPropertyChanged("RollDegree");
         }
     }
-    public double Pitch_Degree
+    public double PitchDegree
     {
-        get { return pitch_Degree; }
+        get { return PropPitchDegree; }
         set
         {
-            pitch_Degree = value;
-            NotifyPropertyChanged("Pitch_Degree");
+            PropPitchDegree = value;
+            NotifyPropertyChanged("PitchDegree");
         }
     }
-    public double Altimeter_FT
+    public double AltimeterFT
     {
-        get { return altimeter_FT; }
+        get { return PropAltimeterFT; }
         set
         {
-            altimeter_FT = value;
-            NotifyPropertyChanged("Altimeter_FT");
+            PropAltimeterFT = value;
+            NotifyPropertyChanged("AltimeterFT");
         }
     }
 
     // commands for set the value of aileron ,add the path to the send list
-    public void setAileron(double aileron)
+    public void SetAileron(double aileron)
     {
         double value_to_send;
 
@@ -210,17 +210,17 @@ public class SimulatorModel : ISimulatorModel
         string msg = "set /controls/flight/aileron " + value_to_send.ToString() + "\n";
 
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
-        lock (balanceLock)
+        lock (bBalanceLock)
         {
-            if (this.to_add)
+            if (this.ShouldAdd)
             {
-                this.To_send.Add(bytes);
+                this.DataToSend.Add(bytes);
             }
         }
     }
 
     // commands for set the value of throttle ,add the path to the send list
-    public void setThrottle(double throttle)
+    public void SetThrottle(double throttle)
     {
         double value_to_send;
 
@@ -243,18 +243,18 @@ public class SimulatorModel : ISimulatorModel
 
         string msg = "set /controls/engines/current-engine/throttle " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
-        lock (balanceLock)
+        lock (bBalanceLock)
         {
-            if (this.to_add)
+            if (this.ShouldAdd)
             {
-                this.To_send.Add(bytes);
+                this.DataToSend.Add(bytes);
             }
 
         }
     }
 
     // commands for set the value of x_rudder and  y_elevator,add the path to the send list
-    public void setDirection(double x_rudder, double y_elevator)
+    public void SetDirection(double x_rudder, double y_elevator)
     {
         double value_to_send;
 
@@ -277,11 +277,11 @@ public class SimulatorModel : ISimulatorModel
 
         string msg = "set /controls/flight/rudder " + value_to_send.ToString() + "\n";
         Byte[] bytes = System.Text.Encoding.ASCII.GetBytes(msg);
-        lock (balanceLock)
+        lock (bBalanceLock)
         {
-            if (this.to_add)
+            if (this.ShouldAdd)
             {
-                this.To_send.Add(bytes);
+                this.DataToSend.Add(bytes);
 
             }
         }
@@ -304,11 +304,11 @@ public class SimulatorModel : ISimulatorModel
         }
         msg = "set /controls/flight/elevator " + value_to_send.ToString() + "\n";
         Byte[]  bytes2 = System.Text.Encoding.ASCII.GetBytes(msg);
-        lock (balanceLock)
+        lock (bBalanceLock)
         {
-            if (this.to_add)
+            if (this.ShouldAdd)
             {
-                this.To_send.Add(bytes2);
+                this.DataToSend.Add(bytes2);
             }
         }
     }
@@ -317,16 +317,16 @@ public class SimulatorModel : ISimulatorModel
     // catch the exp if the server ip or port does not exsit 
     public void Connect(string ip, int port)
     {
-        getter_client.Connect(ip, port);
+        TCPClient.Connect(ip, port);
         this.Start();
 
     }
 
-    // stop the thread and log out
+    // ShouldStop the thread and log out
     public void Disconnect()
     {
-        getter_client.Close();
-        this.stop = true;
+        TCPClient.Close();
+        this.ShouldStop = true;
     }
 
     //this method sample 10 value from the server-simulator in another thread and update the properties 
@@ -337,7 +337,7 @@ public class SimulatorModel : ISimulatorModel
     {
         Thread T = new Thread(delegate ()
         {
-            stream = getter_client.GetStream();
+            TCPStream = TCPClient.GetStream();
             List<Byte[]> list_data = new List<Byte[]>();
             list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/heading-indicator/indicated-heading-deg\n"));
             list_data.Add(System.Text.Encoding.ASCII.GetBytes("get /instrumentation/gps/indicated-vertical-speed\n"));
@@ -353,7 +353,7 @@ public class SimulatorModel : ISimulatorModel
             // String to store the response ASCII representation.
             String responseData = String.Empty;
             bool sreverErr = false;
-            while (!this.stop)
+            while (!this.ShouldStop)
             {
 
                 int i = 0;
@@ -364,164 +364,164 @@ public class SimulatorModel : ISimulatorModel
                 {
                     if (sreverErr)
                     {
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         Errlog = "Status: Connected";
                         sreverErr = false;
                     }
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Heading_Degree = Double.Parse(value);
+                        HeadingDegree = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Heading_Degree";
+                        Errlog = "Bad Input: HeadingDegree";
                     }
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Vertical_Speed = Double.Parse(value);
+                        VerticalSpeed = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Vertical_Speed";
+                        Errlog = "Bad Input: VerticalSpeed";
                     }
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Ground_Speed = Double.Parse(value);
+                        GroundSpeed = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Ground_Speed";
+                        Errlog = "Bad Input: GroundSpeed";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Air_Speed = Double.Parse(value);
+                        AirSpeed = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Air_Speed";
+                        Errlog = "Bad Input: AirSpeed";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Altitude_FT = Double.Parse(value);
+                        AltitudeFT = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Altitude_FT";
+                        Errlog = "Bad Input: AltitudeFT";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Roll_Degree = Double.Parse(value);
+                        RollDegree = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Roll_Degree";
+                        Errlog = "Bad Input: RollDegree";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-                        Pitch_Degree = Double.Parse(value);
+                        PitchDegree = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Pitch_Degree";
+                        Errlog = "Bad Input: PitchDegree";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Altimeter_FT = Double.Parse(value);
+                        AltimeterFT = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Altimeter_FT";
+                        Errlog = "Bad Input: AltimeterFT";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i++].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i++].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+.\d+").Value;
-                        Latitude_deg = Double.Parse(value);
+                        LatitudeDegree = Double.Parse(value);
                         responseData = String.Empty;
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Latitude_deg";
+                        Errlog = "Bad Input: Latitude";
                     }
 
                     try
                     {
-                        stream.Write(list_data[i], 0, list_data[i].Length);
-                        bytes = stream.Read(messageReceived, 0, messageReceived.Length);
+                        TCPStream.Write(list_data[i], 0, list_data[i].Length);
+                        bytes = TCPStream.Read(messageReceived, 0, messageReceived.Length);
                         responseData = System.Text.Encoding.ASCII.GetString(messageReceived, 0, bytes);
                         value = System.Text.RegularExpressions.Regex.Match(responseData, @"\d+[.]\d+").Value;
-                        Longitude_deg = Double.Parse(value);
+                        LongitudeDegree = Double.Parse(value);
                     }
                     catch (FormatException)
                     {
-                        Errlog = "Bad Input: Longitude_deg";
+                        Errlog = "Bad Input: Longitude";
                     }
 
                     //if the long or lat out of range update the err log !!
-                    if (Latitude_deg > 90 || Latitude_deg < -90)
+                    if (LatitudeDegree > 90 || LatitudeDegree < -90)
                     {
-                        Long_lat = "Wrong: out of range";
+                        LongtitudeLatitude = "Wrong: out of range";
                     }
 
-                    else if (Longitude_deg > 180 || Longitude_deg < -180)
+                    else if (LongitudeDegree > 180 || LongitudeDegree < -180)
                     {
-                        Long_lat = "Wrong: out of range";
+                        LongtitudeLatitude = "Wrong: out of range";
                     }
                     else
                     {
-                        Long_lat = Latitude_deg + "\n" + Longitude_deg;
+                        LongtitudeLatitude = LatitudeDegree + "\n" + LongitudeDegree;
                     }
                     responseData = String.Empty;
 
-                    Location = new Location(Latitude_deg, Longitude_deg);
+                    Location = new Location(LatitudeDegree, LongitudeDegree);
                 }
                 // catch if passed 10 sec and the server did not return answer 'update the errLog 
                 catch (IOException e)
@@ -537,24 +537,24 @@ public class SimulatorModel : ISimulatorModel
                         Thread.Sleep(250);
                         Thread.CurrentThread.Abort();
                     }
-                    this.To_send.Clear();
+                    this.DataToSend.Clear();
                 }
                 //lock this becouse we touch the list to send in 2 places
-                lock (balanceLock)
+                lock (bBalanceLock)
                 {
                     try
                     {
-                        if (this.To_send.Count != 0)
+                        if (this.DataToSend.Count != 0)
                         {
                             int j = 0;
                             do
                             {
 
-                                stream.Write(To_send[j], 0, To_send[j].Length);
-                                Int32 bytes32 = stream.Read(To_send[j], 0, To_send[j].Length);
-                                To_send.Remove(To_send[j]);
+                                TCPStream.Write(DataToSend[j], 0, DataToSend[j].Length);
+                                Int32 bytes32 = TCPStream.Read(DataToSend[j], 0, DataToSend[j].Length);
+                                DataToSend.Remove(DataToSend[j]);
 
-                            } while (this.To_send.Count != 0);
+                            } while (this.DataToSend.Count != 0);
                         }
                     }
                     // catch if passed 10 sec and the server did not return answer 'update the errLog 
@@ -571,7 +571,7 @@ public class SimulatorModel : ISimulatorModel
                             Thread.Sleep(250);
                             Thread.CurrentThread.Abort();
                         }
-                        this.To_send.Clear();
+                        this.DataToSend.Clear();
                     }
                     catch
                     {

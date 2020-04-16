@@ -21,42 +21,42 @@ namespace FlightSimulatorApp
     public partial class RunGame : Page
     {
         //ViewModel
-        SimulatorFlightViewModel vm;
-        public static bool to_main;
+        readonly SimulatorFlightViewModel ViewModel;
+        public static bool GoToMainMenu;
         //Intiallize the RunGame component
         public RunGame()
         {
             InitializeComponent();
-            exit_button = new Button();
+            ExitButton = new Button();
             //Set ViewModel and Model
             TcpClient tcpClient = new TcpClient();
-            this.vm = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
-            to_main = false;
+            this.ViewModel = new SimulatorFlightViewModel(new SimulatorModel(tcpClient));
+            GoToMainMenu = false;
 
             //Set Joystick
             joystick1 = new Joystick();
-            joystick1.Set_ViewModel(this.vm);
+            joystick1.SetViewModel(this.ViewModel);
 
-            DataContext = vm; //Set DataContext
+            DataContext = ViewModel; //Set DataContext
         }
 
         //Exit button click: return to main page
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.vm.Disconnect();
+            this.ViewModel.Disconnect();
             if (NavigationService.CanGoBack)
             {
                 this.NavigationService.GoBack();
-                to_main = true;
-                errlog.Text = "";
+                GoToMainMenu = true;
+                Errlog.Text = "";
             }
         }
 
         //Sets the IP and port for connection
-        public void Set_IP_Port(string ip, string port)
+        public void SetIPAndPort(string ip, string port)
         {
             int Port = Int32.Parse(port);
-            this.vm.set_ip_and_port(ip, Port);
+            this.ViewModel.SetIPAndPort(ip, Port);
         }
 
         //Center the map around the airplane
@@ -73,15 +73,15 @@ namespace FlightSimulatorApp
         }
 
         //When the error log updates, show different dialogs (pop-up) and terminate the connection
-        private void errlog_TargetUpdated(object sender, DataTransferEventArgs e)
+        private void Errlog_TargetUpdated(object sender, DataTransferEventArgs e)
         {
-            if (errlog.Text == "Conection Timeout") //TimeOut
+            if (Errlog.Text == "Conection Timeout") //TimeOut
             {
                 return;
             }
-            else if (errlog.Text == "TCP conection to the server failed") //TCP handshake failed
+            else if (Errlog.Text == "TCP conection to the server failed") //TCP handshake failed
             {
-                this.vm.Disconnect();
+                this.ViewModel.Disconnect();
                 System.Threading.Thread.Sleep(TimeSpan.FromSeconds(3));
 
                 if (NavigationService.CanGoBack)
@@ -91,9 +91,9 @@ namespace FlightSimulatorApp
 
                 return;
             }
-            else if (errlog.Text == "The connection was forcibly closed by the remote host, please go back to the main menu and try again")
+            else if (Errlog.Text == "The connection was forcibly closed by the remote host, please go back to the main menu and try again")
             {
-                this.vm.Disconnect();
+                this.ViewModel.Disconnect();
 
                 if (NavigationService.CanGoBack)
                 {

@@ -12,7 +12,7 @@
     <Grid>
         <Grid>
             <m:Map x:Name="myMap" Height="400" Width="600" Margin="52,100,348,100" CredentialsProvider="Efrm00R0uOe9tstXABog~HN8zd-0ZyvlPGN2BnUW2IA~AuMKtt-7IYDQ-lJJj4NZRipbartihC84fiuj1cdGC3FPA5WyFDQCfI6LV7gFh4G2" Mode="Road" Center="{Binding VM_Location}" ZoomLevel="12" >
-                <m:Pushpin x:Name="myPin" Location="{Binding VM_Location}" Heading="{Binding VM_Heading_Degree}" >
+                <m:Pushpin x:Name="myPin" Location="{Binding VM_Location}" Heading="{Binding VM_HeadingDegree}" >
                 </m:Pushpin>
                 <Button x:Name="CenterButton" Height="40" Margin="0,0,508,360" Content="Center Me" Click="CenterButton_Click"/>
             </m:Map>
@@ -29,7 +29,7 @@
             </Controls:Joystick.RenderTransform>
         </Controls:Joystick>
 
-        <Button x:Name="exit_button" Content="Main Menu" Click="Button_Click" Margin="0,0,756,537" FontSize="36">
+        <Button x:Name="ExitButton" Content="Main Menu" Click="ExitButton_Click" Margin="0,0,756,537" FontSize="36">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="0.5"/>
@@ -53,18 +53,18 @@
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="352" Margin="847,-2,0,0" VerticalAlignment="Top" Width="186">
-            <Label Content="{Binding VM_Heading_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Vertical_Speed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Ground_Speed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Air_Speed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Altitude_FT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Roll_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Pitch_Degree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
-            <Label Content="{Binding VM_Altimeter_FT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_HeadingDegree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_VerticalSpeed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_GroundSpeed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_AirSpeed}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_AltitudeFT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_RollDegree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_PitchDegree}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
+            <Label Content="{Binding VM_AltimeterFT}" ContentStringFormat="0.000" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Left" Height="74" Margin="360,15,0,0" VerticalAlignment="Top" Width="268" >
-            <Label Content="{Binding VM_Long_lat}" ContentStringFormat="0.00" Height="66" Width="248"  Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="10,0"/>
+            <Label Content="{Binding VM_LongtitudeLatitude}" ContentStringFormat="0.00" Height="66" Width="248"  Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="10,0"/>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left" Height="74" Margin="155,16,0,0" VerticalAlignment="Top" Width="200" >
             <Label Content="Latitude, Longitude:" Height="44" Width="188"  Foreground="White" FontSize="18" FontFamily="Arial"/>
@@ -78,7 +78,7 @@
         </StackPanel>
 
         <Rectangle  Margin="54,524,344,52" Fill="#FFFFC5C5"/>
-        <TextBlock x:Name="errlog" Text="{Binding VM_Errlog, Mode=OneWay, NotifyOnTargetUpdated=True}" Margin="54,524,344,52" TargetUpdated="errlog_TargetUpdated" FontWeight="Bold"/>
+        <TextBlock x:Name="Errlog" Text="{Binding VM_Errlog, Mode=OneWay, NotifyOnTargetUpdated=True}" Margin="54,524,344,52" TargetUpdated="Errlog_TargetUpdated" FontWeight="Bold"/>
 
         <Grid.Background>
             <ImageBrush ImageSource="background.jpg"/>
