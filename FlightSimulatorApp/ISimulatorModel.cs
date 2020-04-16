@@ -1,7 +1,5 @@
 using Microsoft.Maps.MapControl.WPF;
-using System;
 using System.ComponentModel;
-using System.Net.Sockets;
 
 public interface ISimulatorModel : INotifyPropertyChanged
 {
@@ -10,20 +8,20 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	void Disconnect();
 	void Start();
 
-	string Long_lat { get; set; }
+	string LongtitudeLatitude { get; set; }
 	//airplane properties
-	double Heading_Degree { get; set; }
-	double Vertical_Speed { get; set; }
-	double Ground_Speed { get; set; }
-	 double Air_Speed { get; set; }
-	 double Altitude_FT { get; set; }
-	 double Roll_Degree { get; set; }
-	 double Pitch_Degree { get; set; }
-	 double Altimeter_FT { get; set; }
+	double HeadingDegree { get; set; }
+	double VerticalSpeed { get; set; }
+	double GroundSpeed { get; set; }
+	 double AirSpeed { get; set; }
+	 double AltitudeFT { get; set; }
+	 double RollDegree { get; set; }
+	 double PitchDegree { get; set; }
+	 double AltimeterFT { get; set; }
 
-	 double Latitude_deg { get; set; }
+	 double LatitudeDegree { get; set; }
 
-	 double Longitude_deg { get; set; }
+	 double LongitudeDegree { get; set; }
 
 	 Location Location { get; set; }
 
@@ -31,10 +29,10 @@ public interface ISimulatorModel : INotifyPropertyChanged
 	 string Errlog { get; set; }
 
 	//three commands to send to the server(simulator)
-	 void setAileron(double aileron);
+	 void SetAileron(double aileron);
 
-	 void setThrottle(double throttle);
+	 void SetThrottle(double throttle);
 
-	 void setDirection(double x_rudder, double y_elevator);
+	 void SetDirection(double rudder, double elevator);
 
 }

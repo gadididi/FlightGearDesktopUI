@@ -28,30 +28,30 @@ namespace FlightSimulatorApp
         public HomePage()
         {
             InitializeComponent();
-            if (!first_time && !RunGame.to_main)
+            if (!first_time && !RunGame.GoToMainMenu)
             {
-                second_chance.Text = "         The connection was forcibly closed by the remote host";
+                second_chance.Text = "         The connection was forcibly closed by the host";
             }
             first_time = false;
         }
 
         //exit click ,exit the game
-        private void Button_Click_Exit(object sender, RoutedEventArgs e)
+        private void ExitButton_ClickExit(object sender, RoutedEventArgs e)
         {
             System.Environment.Exit(1);
         }
 
         // click fly start the game only if the port and ip standard , else show  "wrong IP or port"
-        private void Button_Click_Fly(object sender, RoutedEventArgs e)
+        private void FlyButtonButton_ClickFly(object sender, RoutedEventArgs e)
         {
            
-            if (Check_ip() && Check_port()) // !!!! OR IP AND PORT IS GOOD
+            if (IPCheck() && PortCheck()) // !!!! OR IP AND PORT IS GOOD
             {
                 this.run = new RunGame();
 
                 try
                 {
-                    run.Set_IP_Port(ip.Text, port.Text);
+                    run.SetIPAndPort(ip.Text, port.Text);
                     this.NavigationService.Navigate(run);
                 }
                 catch
@@ -66,7 +66,7 @@ namespace FlightSimulatorApp
             }
         }
         //the user in the text box of ip
-        private void ip_GotFocus(object sender, RoutedEventArgs e)
+        private void GotFocusOnIP(object sender, RoutedEventArgs e)
         {
             if (ip.Text == "Enter IP")
             {
@@ -74,7 +74,7 @@ namespace FlightSimulatorApp
             }
         }
         //the user in the text port box
-        private void port_GotFocus(object sender, RoutedEventArgs e)
+        private void GotFocusOnPort(object sender, RoutedEventArgs e)
         {
             if (port.Text == "Enter port")
             {
@@ -83,7 +83,7 @@ namespace FlightSimulatorApp
         }
 
         // the user leave the ip box empty , return the diffualt sentence
-        private void ip_LostFocus(object sender, RoutedEventArgs e)
+        private void LostFocusOnIP(object sender, RoutedEventArgs e)
         {
             if (ip.Text == "")
             {
@@ -92,7 +92,7 @@ namespace FlightSimulatorApp
         }
 
         // the user leave the port box empty , return the Default sentence
-        private void port_LostFocus(object sender, RoutedEventArgs e)
+        private void LostFocusOnPort(object sender, RoutedEventArgs e)
         {
             if (port.Text == "")
             {
@@ -101,7 +101,7 @@ namespace FlightSimulatorApp
         }
 
         // get the default ip + port from the app config file
-        private void def_Click(object sender, RoutedEventArgs e)
+        private void DefaultButton_Click(object sender, RoutedEventArgs e)
         {
             string myIP = ConfigurationManager.AppSettings["ip"];
             string myPort = ConfigurationManager.AppSettings["port"];
@@ -110,7 +110,7 @@ namespace FlightSimulatorApp
         }
 
         //checking if the ip is standard
-        private bool Check_ip()
+        private bool IPCheck()
         {
             string phrase = this.ip.Text;
             string[] numbers = phrase.Split('.');
@@ -138,7 +138,7 @@ namespace FlightSimulatorApp
             return true;
         }
         //checking if the port is standard
-        private bool Check_port()
+        private bool PortCheck()
         {
             int m;
             try
